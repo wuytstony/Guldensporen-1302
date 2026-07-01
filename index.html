@@ -1,150 +1,173 @@
 <!DOCTYPE html>
-
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geocache Quiz - Guldensporenslag</title>
+<title>Guldensporenslag Geocache Quiz</title>
 
 <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+}
 
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 15px;
-  }
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
 
-  .box {
-    background: white;
-    width: 100%;
-    height: 100%;
-    max-width: 600px;
-    max-height: 100%;
-    border-radius: 0;
-    padding: 25px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+.box {
+  width: 100%;
+  max-width: 700px;
+  background: #1c1c1c;
+  display: flex;
+  flex-direction: column;
+}
 
-  h1 {
-    font-size: 26px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
+.header {
+  text-align: center;
+  padding: 15px;
+  font-size: 22px;
+  background: #000;
+}
 
-  h2 {
-    font-size: 22px;
-    line-height: 1.4;
-  }
+img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
 
-  input {
-    padding: 14px;
-    font-size: 18px;
-    margin-top: 20px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-  }
+.content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  button {
-    padding: 16px;
-    margin-top: 15px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    background-color: #007BFF;
-    color: white;
-    width: 100%;
-  }
+.question {
+  font-size: 20px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
 
-  #feedback {
-    margin-top: 10px;
-    font-weight: bold;
-  }
+.btn {
+  background: #333;
+  border: none;
+  color: white;
+  padding: 14px;
+  margin: 8px 0;
+  font-size: 18px;
+  border-radius: 10px;
+  width: 100%;
+}
 
-  .center {
-    text-align: center;
-  }
+.btn:active {
+  background: #555;
+}
+
+.feedback {
+  margin-top: 10px;
+  font-weight: bold;
+}
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
   <div class="box">
-    <h1>🛡️ Guldensporenslag Quiz</h1>
-    <div id="quiz"></div>
+
+    <div class="header">
+      🛡️ Guldensporenslag Geocache Quiz
+    </div>
+
+    <img id="img" src="" alt="">
+
+    <div class="content">
+      <div id="quiz"></div>
+    </div>
+
   </div>
 </div>
 
 <script>
+
 const vragen = [
   {
-    vraag: "📍 Start aan de Onze-Lieve-Vrouwekerk\nIn welk jaar vond de Guldensporenslag plaats?",
-    antwoord: "1302"
+    vraag: "In welk jaar vond de Guldensporenslag plaats?",
+    opties: ["1202", "1302", "1402", "1502"],
+    antwoord: 1,
+    img: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Kortrijk_Groeningemonument.jpg"
   },
   {
-    vraag: "🚶 Ga naar het Groeningepark\nWie won de slag?",
-    antwoord: "vlamingen"
+    vraag: "Wie won de Guldensporenslag?",
+    opties: ["Fransen", "Romeinen", "Vlamingen", "Engelsen"],
+    antwoord: 2,
+    img: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Flag_of_Flanders.svg"
   },
   {
-    vraag: "📍 Kijk naar het standbeeld\nHoe heet het wapen van de Vlaamse strijders?",
-    antwoord: "goedendag"
+    vraag: "Wat is een typische geocache?",
+    opties: ["Schatkist", "Auto", "Televisie", "Fiets"],
+    antwoord: 0,
+    img: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Geocaching_container.jpg"
   },
   {
-    vraag: "🏁 Ga naar het infopunt\nHoeveel gouden sporen werden verzameld? (schatting)",
-    antwoord: "500"
+    vraag: "Wat is het juiste eindpunt van deze tocht?",
+    opties: ["Kerk", "Bos", "Infopunt Kortrijk", "Station"],
+    antwoord: 2,
+    img: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Kortrijk_Belfort.jpg"
   }
 ];
 
-let huidigeVraag = 0;
+let huidige = 0;
 
 function toonVraag() {
-  const q = vragen[huidigeVraag];
-  document.getElementById("quiz").innerHTML = `
-    <h2>${q.vraag.replace(/\\n/g, "<br>")}</h2>
-    <input type="text" id="antwoord" placeholder="Typ je antwoord hier">
-    <button onclick="controleer()">Controleer</button>
-    <p id="feedback"></p>
+  const q = vragen[huidige];
+
+  document.getElementById("img").src = q.img;
+
+  let html = `
+    <div class="question">${q.vraag}</div>
   `;
+
+  q.opties.forEach((optie, index) => {
+    html += `<button class="btn" onclick="check(${index})">${optie}</button>`;
+  });
+
+  html += `<div class="feedback" id="feedback"></div>`;
+
+  document.getElementById("quiz").innerHTML = html;
 }
 
-function controleer() {
-  const input = document.getElementById("antwoord").value.toLowerCase().trim();
-  const correct = vragen[huidigeVraag].antwoord;
+function check(gekozen) {
+  if (gekozen === vragen[huidige].antwoord) {
+    huidige++;
 
-  if (input === correct) {
-    huidigeVraag++;
-    if (huidigeVraag < vragen.length) {
+    if (huidige < vragen.length) {
       toonVraag();
     } else {
+      document.getElementById("img").style.display = "none";
       document.getElementById("quiz").innerHTML = `
-        <div class="center">
-          <h2>🎉 Proficiat!</h2>
-          <p>Je hebt de geocache voltooid!</p>
-          <p><strong>🔐 De schatkist bevindt zich in het infopunt.</strong></p>
-          <p><strong>Code: 1234</strong></p>
-        </div>
+        <h2>🎉 Proficiat!</h2>
+        <p>Je hebt de geocache voltooid.</p>
+        <p><strong>🔐 Schatkist gevonden in het infopunt</strong></p>
+        <p><strong>Code: 1234</strong></p>
       `;
     }
   } else {
-    document.getElementById("feedback").innerText = "❌ Fout antwoord, probeer opnieuw!";
+    document.getElementById("feedback").innerText = "❌ Fout antwoord, probeer opnieuw";
   }
 }
 
 toonVraag();
+
 </script>
 
 </body>
