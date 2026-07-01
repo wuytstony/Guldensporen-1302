@@ -1,10 +1,100 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="nl">
 <head>
-  <title>Mijn Geocache Quiz</title>
+<meta charset="UTF-8">
+<title>Geocache Quiz - Guldensporenslag</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 30px;
+    background-color: #f4f4f4;
+  }
+  .box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  input {
+    padding: 10px;
+    width: 80%;
+    margin-top: 10px;
+  }
+</style>
 </head>
+
 <body>
-  <h1>Welkom!</h1>
-  <p>Dit is mijn eerste GitHub Pages site 🎉</p>
+
+<div class="box">
+  <h1>🛡️ Guldensporenslag Quiz</h1>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const vragen = [
+  {
+    vraag: "📍 Start aan de Onze-Lieve-Vrouwekerk\nIn welk jaar vond de Guldensporenslag plaats?",
+    antwoord: "1302"
+  },
+  {
+    vraag: "🚶 Ga naar het Groeningepark\nWie won de slag?",
+    antwoord: "vlamingen"
+  },
+  {
+    vraag: "📍 Kijk naar het standbeeld\nHoe heet het wapen van de Vlaamse strijders?",
+    antwoord: "goedendag"
+  },
+  {
+    vraag: "🏁 Ga naar het infopunt\nHoeveel gouden sporen werden verzameld? (schatting)",
+    antwoord: "500"
+  }
+];
+
+let huidigeVraag = 0;
+
+function toonVraag() {
+  const q = vragen[huidigeVraag];
+  document.getElementById("quiz").innerHTML = `
+    <h2>${q.vraag}</h2>
+    <input type="text" id="antwoord" placeholder="Jouw antwoord">
+    <br>
+    <button onclick="controleer()">Controleer</button>
+    <p id="feedback"></p>
+  `;
+}
+
+function controleer() {
+  const input = document.getElementById("antwoord").value.toLowerCase().trim();
+  const correct = vragen[huidigeVraag].antwoord;
+
+  if (input === correct) {
+    huidigeVraag++;
+    if (huidigeVraag < vragen.length) {
+      toonVraag();
+    } else {
+      document.getElementById("quiz").innerHTML = `
+        <h2>🎉 Proficiat!</h2>
+        <p>Je hebt de geocache voltooid!</p>
+      `;
+    }
+  } else {
+    document.getElementById("feedback").innerText = "❌ Fout antwoord, probeer opnieuw!";
+  }
+}
+
+toonVraag();
+</script>
+
 </body>
 </html>
+
