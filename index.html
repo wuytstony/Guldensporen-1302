@@ -3,34 +3,66 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Geocache Quiz - Guldensporenslag</title>
+
 <style>
   body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 30px;
+    margin: 0;
+    padding: 15px;
     background-color: #f4f4f4;
+    font-size: 18px;
   }
+
   .box {
     background: white;
     padding: 20px;
-    border-radius: 10px;
-    max-width: 500px;
+    border-radius: 12px;
+    max-width: 600px;
     margin: auto;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
-  button {
-    padding: 10px 20px;
-    margin-top: 15px;
-    font-size: 16px;
-    cursor: pointer;
+
+  h1 {
+    font-size: 24px;
   }
+
+  h2 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+
   input {
-    padding: 10px;
-    width: 80%;
+    padding: 12px;
+    width: 100%;
+    font-size: 18px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    padding: 14px;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007BFF;
+    color: white;
+  }
+
+  button:active {
+    background-color: #0056b3;
+  }
+
+  #feedback {
     margin-top: 10px;
+    font-weight: bold;
   }
 </style>
+
 </head>
 
 <body>
@@ -65,9 +97,8 @@ let huidigeVraag = 0;
 function toonVraag() {
   const q = vragen[huidigeVraag];
   document.getElementById("quiz").innerHTML = `
-    <h2>${q.vraag}</h2>
-    <input type="text" id="antwoord" placeholder="Jouw antwoord">
-    <br>
+    <h2>${q.vraag.replace(/\\n/g, "<br>")}</h2>
+    <input type="text" id="antwoord" placeholder="Typ je antwoord hier">
     <button onclick="controleer()">Controleer</button>
     <p id="feedback"></p>
   `;
@@ -85,6 +116,8 @@ function controleer() {
       document.getElementById("quiz").innerHTML = `
         <h2>🎉 Proficiat!</h2>
         <p>Je hebt de geocache voltooid!</p>
+        <p><strong>🔐 De schatkist bevindt zich in het infopunt.</strong></p>
+        <p><strong>Code: 1234</strong></p>
       `;
     }
   } else {
@@ -97,4 +130,3 @@ toonVraag();
 
 </body>
 </html>
-
