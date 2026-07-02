@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guldensporenslag App</title>
+<title>Guldensporenslag Geogame</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#111;
-  color:white;
+  color:#fff;
 }
 
 .page{
@@ -25,7 +25,13 @@ body{
 
 .active{display:flex;}
 
-h2{margin-bottom:15px}
+h2{margin-bottom:10px}
+
+.sub{
+  color:#e5a93c;
+  font-weight:bold;
+  margin-bottom:15px;
+}
 
 button{
   width:100%;
@@ -46,17 +52,16 @@ button:hover{background:#444}
   font-weight:bold;
 }
 
-/* 4 knoppen naast elkaar */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:8px;
-}
-
 img{
   max-width:100%;
   border-radius:10px;
   margin:10px 0;
+}
+
+.grid{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
 .row{
@@ -66,7 +71,7 @@ img{
 
 .row img{
   width:50%;
-  cursor:pointer;
+  border-radius:10px;
 }
 
 .code{
@@ -92,29 +97,34 @@ img{
 
   <p>
   De slag was het gevolg van de Vlaamse Opstand.<br>
-  De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.
+  Ambachtslieden versloegen een ridderleger.
   </p>
 
-  <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c4f5ac2ed7/content/images/2026/03/1-35.webp">
+  <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-b70c4f5ac2ed7/content/images/2026/03/1-35.webp">
 
   <button class="primary" onclick="go('q1')">Start</button>
 </div>
 
 <!-- Q1 -->
 <div class="page" id="q1">
-  <h2>Onder welke graaf vond de Guldensporenslag plaats?</h2>
+  <h2>Vraag 1</h2>
+  <div class="sub">Onder welke graaf vond de Guldensporenslag plaats?</div>
+
   <div class="grid" id="q1box"></div>
 </div>
 
 <!-- Q2 -->
 <div class="page" id="q2">
-  <h2>Wanneer vond de Guldensporenslag plaats?</h2>
+  <h2>Vraag 2</h2>
+  <div class="sub">Wanneer vond de Guldensporenslag plaats?</div>
+
   <div class="grid" id="q2box"></div>
 </div>
 
 <!-- Q3 -->
 <div class="page" id="q3">
-  <h2>Vlaamse leger (links) tegen ...?</h2>
+  <h2>Vraag 3</h2>
+  <div class="sub">Vlaamse leger (links) tegen welk leger?</div>
 
   <div class="row">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png">
@@ -126,28 +136,30 @@ img{
 
 <!-- Q4 -->
 <div class="page" id="q4">
-  <h2>Goedendag wapen</h2>
+  <h2>Vraag 4</h2>
 
-  <p>
-  De term "goedendag" is een middeleeuws wapen. De verwarring met een "punt maar geen bol" ontstaat doordat dit wapen een zware houten knots is met een metalen piek/punt aan de bovenkant, in plaats van een metalen bol (zoals bij een morgenster of strijdvlegel).
-  </p>
+  <div class="sub">
+  De term "goedendag" is een middeleeuws wapen. Het is een zware houten knots met metalen punt bovenaan.
+  </div>
 
-  <p><b>Welk objectnummer vind je terug bij de punt van een goedendag?</b></p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG">
+
+  <div class="sub">Welk objectnummer vind je terug bij de punt van een goedendag?</div>
 
   <div class="grid" id="q4box"></div>
 </div>
 
 <!-- Q5 -->
 <div class="page" id="q5">
-  <h2>Guldensporen</h2>
+  <h2>Vraag 5</h2>
 
-  <p>
-  De Vlamingen vonden op het slagveld – volgens de versie van Hendrik Conscience (minstens vijfhonderd vergulde sporen, vandaar de (moderne) naam van de slag. Alleen adellijke ridders konden zich de aankoop van vergulde sporen veroorloven.
-  </p>
+  <div class="sub">
+  De Vlamingen vonden op het slagveld volgens Hendrik Conscience minstens 500 vergulde sporen.
+  </div>
 
   <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg">
 
-  <p><b>Welk objectnummer vind je terug bij het Guldenspoor?</b></p>
+  <div class="sub">Welk objectnummer vind je terug bij het Guldenspoor?</div>
 
   <div class="grid" id="q5box"></div>
 </div>
@@ -169,14 +181,6 @@ img{
 
 <script>
 
-const correct = {
-  q1:"Gwijde van Dampierre",
-  q2:"11 juli 1302",
-  q3:"Franse leger",
-  q4:"8",
-  q5:"3"
-};
-
 const codes = {
 1:"4817",2:"9023",3:"6631",4:"1184",5:"5502",
 6:"7391",7:"2048",8:"9912",9:"3305",10:"7816",
@@ -187,77 +191,71 @@ const codes = {
 31:"5093"
 };
 
-function shuffle(a){
-  return a.sort(() => Math.random() - 0.5);
-}
-
 function go(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
 
   if(page === 'end'){
-    document.getElementById('code').innerText = codes[new Date().getDate()];
+    const day = new Date().getDate();
+    document.getElementById('code').innerText = codes[day];
   }
 }
 
-/* -------- QUESTIONS BUILD -------- */
-
-function build(){
-  render("q1box", [
-    ["Filips de Schone",false],
-    ["Robrecht van Bethune",false],
-    ["Gwijde van Dampierre",true],
-    ["Lodewijk IX",false]
-  ],1);
-
-  render("q2box", [
-    ["11 juli 1302",true],
-    ["13 juli 1302",false],
-    ["11 juli 1297",false],
-    ["11 juli 1382",false]
-  ],2);
-
-  render("q3box", [
-    ["Engelse leger",false],
-    ["Duitse leger",false],
-    ["Franse leger",true],
-    ["Spaanse leger",false]
-  ],3);
-
-  render("q4box", [
-    ["3",false],
-    ["5",false],
-    ["8",true],
-    ["12",false]
-  ],4);
-
-  render("q5box", [
-    ["1",false],
-    ["3",true],
-    ["5",false],
-    ["7",false]
-  ],5);
-}
-
-function render(id, arr, q){
+/* QUESTIONS */
+function build(id, arr, next){
   const box = document.getElementById(id);
   box.innerHTML = "";
 
-  shuffle(arr).forEach(opt=>{
+  arr.sort(()=>Math.random()-0.5).forEach(opt=>{
     const b = document.createElement("button");
     b.innerText = opt[0];
+
     b.onclick = () => {
       if(opt[1]){
-        go("q"+(q+1));
+        go(next);
       } else {
         alert("Fout antwoord");
       }
     };
+
     box.appendChild(b);
   });
 }
 
-build();
+build("q1box", [
+  ["Filips de Schone",false],
+  ["Robrecht van Bethune",false],
+  ["Gwijde van Dampierre",true],
+  ["Lodewijk IX",false]
+],"q2");
+
+build("q2box", [
+  ["11 juli 1302",true],
+  ["13 juli 1302",false],
+  ["11 juli 1297",false],
+  ["11 juli 1382",false]
+],"q3");
+
+build("q3box", [
+  ["Engelse leger",false],
+  ["Duitse leger",false],
+  ["Franse leger",true],
+  ["Spaanse leger",false]
+],"q4");
+
+build("q4box", [
+  ["3",false],
+  ["5",false],
+  ["8",true],
+  ["12",false]
+],"q5");
+
+build("q5box", [
+  ["1",false],
+  ["3",true],
+  ["5",false],
+  ["7",false]
+],"end");
 
 </script>
 
