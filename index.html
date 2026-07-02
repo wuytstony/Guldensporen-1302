@@ -3,261 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guldensporenslag - Geocache</title>
+<title>Guldensporenslag App</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
-  background:#000;
+  font-family:Arial, sans-serif;
+  background:#111;
   color:#fff;
 }
 
-.screen{
+.page{
   display:none;
   height:100vh;
-  padding:25px;
+  padding:20px;
   box-sizing:border-box;
-  text-align:center;
   flex-direction:column;
   justify-content:center;
+  text-align:center;
 }
 
 .active{display:flex;}
 
+h1,h2{margin-bottom:15px}
+
 button{
   width:100%;
-  max-width:500px;
-  margin:8px auto;
-  padding:16px;
-  font-size:16px;
+  padding:14px;
+  margin:8px 0;
   border:none;
   border-radius:10px;
-  background:#1f2937;
+  font-size:16px;
+  background:#333;
   color:white;
 }
 
-button:hover{background:#374151;}
+button:hover{background:#444}
 
 .primary{
-  background:#22c55e;
+  background:#e5a93c;
   color:black;
   font-weight:bold;
+}
+
+img{
+  max-width:100%;
+  border-radius:10px;
+  margin:10px 0;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+}
+
+.row img{
+  width:50%;
+  cursor:pointer;
+  border:2px solid transparent;
+}
+
+.row img:hover{
+  border:2px solid #e5a93c;
+}
+
+.code{
+  font-size:42px;
+  font-weight:bold;
+  color:#e5a93c;
+  margin-top:20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- START -->
-<div class="screen active" id="start">
-  <h1>🏰 Guldensporenslag 1302</h1>
+<!-- GPS -->
+<div class="page active" id="gps">
+  <h1>📍 GPS check</h1>
   <p>Start de missie op de juiste locatie</p>
-  <button class="primary" onclick="startGPS()">Start missie</button>
-  <p id="msg"></p>
+  <button class="primary" onclick="start()">Activeer GPS</button>
 </div>
 
-<!-- MISSIE -->
-<div class="screen" id="mission">
-  <h2 id="title">Locatie</h2>
-  <p id="info">Laden...</p>
-  <button class="primary" onclick="checkGPS()">Controleer locatie</button>
-  <p id="gpsmsg"></p>
+<!-- WELKOM -->
+<div class="page" id="welcome">
+  <h2>Guldensporenslag (Slag bij Kortrijk)</h2>
+
+  <p>
+  De slag was het gevolg van de Vlaamse Opstand.<br>
+  De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.
+  </p>
+
+  <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-b70c4f5ac2ed7/content/images/2026/03/1-35.webp">
+
+  <button class="primary" onclick="go('q1')">Start missie</button>
 </div>
 
-<!-- QUIZ -->
-<div class="screen" id="quiz">
-  <h2 id="qtitle"></h2>
-  <div id="answers"></div>
+<!-- Q1 -->
+<div class="page" id="q1">
+  <h2>1. Onder welke graaf?</h2>
+
+  <button onclick="check(1,'Gwijde van Dampierre')">Gwijde van Dampierre</button>
+  <button onclick="check(1,'Filips de Schone')">Filips de Schone</button>
+  <button onclick="check(1,'Robrecht van Bethune')">Robrecht van Bethune</button>
+  <button onclick="check(1,'Lodewijk IX')">Lodewijk IX</button>
 </div>
 
-<!-- EINDE -->
-<div class="screen" id="end">
-  <h2>🎉 Missie voltooid</h2>
-  <p>Ga naar het infopunt en toon deze code:</p>
-  <h1 id="code"></h1>
+<!-- Q2 -->
+<div class="page" id="q2">
+  <h2>2. Wanneer?</h2>
+
+  <button onclick="check(2,'11 juli 1302')">11 juli 1302</button>
+  <button onclick="check(2,'13 juli 1302')">13 juli 1302</button>
+  <button onclick="check(2,'11 juli 1297')">11 juli 1297</button>
+  <button onclick="check(2,'11 juli 1382')">11 juli 1382</button>
+</div>
+
+<!-- Q3 -->
+<div class="page" id="q3">
+  <h2>3. Tegen welk leger?</h2>
+
+  <div class="row">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" onclick="check(3,'Vlaamse')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" onclick="check(3,'Franse')">
+  </div>
+
+  <p>Links = Vlaamse leger | Rechts = Franse leger</p>
+</div>
+
+<!-- Q4 -->
+<div class="page" id="q4">
+  <h2>4. Goedendag wapen</h2>
+
+  <p>
+  De goedendag is een middeleeuws wapen met een houten knots en metalen punt.
+  </p>
+
+  <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png">
+
+  <p>Welk objectnummer?</p>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG">
+
+  <button onclick="check(4,'8')">8</button>
+  <button onclick="check(4,'5')">5</button>
+  <button onclick="check(4,'3')">3</button>
+  <button onclick="check(4,'12')">12</button>
+</div>
+
+<!-- Q5 -->
+<div class="page" id="q5">
+  <h2>5. Guldensporen</h2>
+
+  <p>
+  Volgens Hendrik Conscience werden minstens 500 vergulde sporen gevonden.
+  </p>
+
+  <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg">
+
+  <p>Welk objectnummer?</p>
+
+  <button onclick="check(5,'1')">1</button>
+  <button onclick="check(5,'3')">3</button>
+  <button onclick="check(5,'5')">5</button>
+  <button onclick="check(5,'7')">7</button>
+</div>
+
+<!-- END -->
+<div class="page" id="end">
+  <h2>🎉 Proficiat!</h2>
+
+  <p>
+  Je hebt de missie voltooid!<br>
+  Je kan de schatkist om de cache te loggen vinden in het infopunt.<br>
+  Hierin ligt het logboek en de code voor RV Vlaanderen.
+  </p>
+
+  <p>Controlecode:</p>
+  <div class="code" id="code"></div>
+
+  <p>toon dit scherm met de code in het infopunt</p>
 </div>
 
 <script>
 
-/* ---------------------------
-   LOCATIES (PAS AAN IN KORTRIJK)
----------------------------- */
-
-const steps = [
-  {
-    name: "Onze-Lieve-Vrouwekerk Kortrijk",
-    lat: 50.8279,
-    lon: 3.2649,
-    radius: 80,
-    info: "Startpunt van de tocht rond 1302."
-  },
-  {
-    name: "Groeningepark",
-    lat: 50.8296,
-    lon: 3.2685,
-    radius: 80,
-    info: "Hier staat het monument van de Guldensporenslag."
-  },
-  {
-    name: "Infopunt Kortrijk",
-    lat: 50.8275,
-    lon: 3.2640,
-    radius: 80,
-    info: "Eindpunt van de missie."
-  }
-];
-
-/* QUIZ PER STAP */
-const quiz = [
-  {
-    q: "Wanneer was de Guldensporenslag?",
-    a: [
-      ["1303", false],
-      ["11 juli 1302", true],
-      ["1299", false],
-      ["1310", false]
-    ]
-  },
-  {
-    q: "Tegen welk leger?",
-    a: [
-      ["Fransen", true],
-      ["Engelsen", false],
-      ["Duitsers", false],
-      ["Spanjaarden", false]
-    ]
-  }
-];
-
-const codes = {
-1:"4817",2:"9023",3:"6631"
+const answers = {
+  1:"Gwijde van Dampierre",
+  2:"11 juli 1302",
+  3:"Franse",
+  4:"8",
+  5:"3"
 };
 
-/* ---------------------------
-   STATE
----------------------------- */
+const codes = {
+1:"4817",2:"9023",3:"6631",4:"1184",5:"5502",
+6:"7391",7:"2048",8:"9912",9:"3305",10:"7816",
+11:"4129",12:"8730",13:"2951",14:"6402",15:"5189",
+16:"9031",17:"7740",18:"1106",19:"5628",20:"3381",
+21:"9845",22:"2719",23:"6603",24:"1457",25:"8092",
+26:"4530",27:"9921",28:"3674",29:"7125",30:"8806",
+31:"5093"
+};
 
-let step = 0;
-
-/* ---------------------------
-   START
----------------------------- */
-
-function startGPS(){
-  step = 0;
-  show("mission");
-  loadStep();
+function start(){
+  go('welcome');
 }
 
-/* ---------------------------
-   STEP LOAD
----------------------------- */
+function go(page){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
 
-function loadStep(){
-  document.getElementById("title").innerText = steps[step].name;
-  document.getElementById("info").innerText = steps[step].info;
-}
-
-/* ---------------------------
-   GPS CHECK
----------------------------- */
-
-function checkGPS(){
-  navigator.geolocation.getCurrentPosition(pos => {
-
-    const d = distance(
-      pos.coords.latitude,
-      pos.coords.longitude,
-      steps[step].lat,
-      steps[step].lon
-    );
-
-    document.getElementById("gpsmsg").innerText =
-      "Afstand: " + Math.round(d) + " meter";
-
-    if(d <= steps[step].radius){
-      next();
-    } else {
-      document.getElementById("gpsmsg").innerText =
-        "Je bent nog te ver ("+Math.round(d)+"m)";
-    }
-
-  });
-}
-
-/* ---------------------------
-   VOLGENDE STAP
----------------------------- */
-
-function next(){
-
-  if(step < steps.length - 1){
-    showQuiz();
-  } else {
-    finish();
+  if(page === 'end'){
+    const day = new Date().getDate();
+    document.getElementById('code').innerText = codes[day];
   }
 }
 
-/* ---------------------------
-   QUIZ
----------------------------- */
-
-function showQuiz(){
-  show("quiz");
-
-  const q = quiz[step];
-  document.getElementById("qtitle").innerText = q.q;
-
-  const box = document.getElementById("answers");
-  box.innerHTML = "";
-
-  q.a.forEach(opt => {
-    const b = document.createElement("button");
-    b.innerText = opt[0];
-    b.onclick = () => {
-      if(opt[1]){
-        step++;
-        show("mission");
-        loadStep();
-      } else {
-        alert("Fout antwoord");
-      }
-    };
-    box.appendChild(b);
-  });
-}
-
-/* ---------------------------
-   EINDE
----------------------------- */
-
-function finish(){
-  show("end");
-  const day = new Date().getDate();
-  document.getElementById("code").innerText = codes[step] || "XXXX";
-}
-
-/* ---------------------------
-   HELPERS
----------------------------- */
-
-function show(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function distance(a,b,c,d){
-  const R=6371e3;
-  const φ1=a*Math.PI/180;
-  const φ2=c*Math.PI/180;
-  const dφ=(c-a)*Math.PI/180;
-  const dλ=(d-b)*Math.PI/180;
-
-  const x=Math.sin(dφ/2)**2+
-          Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
-
-  return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+function check(q, ans){
+  if(ans === answers[q]){
+    go('q' + (q + 1));
+  } else {
+    alert("Fout antwoord");
+  }
 }
 
 </script>
