@@ -1,86 +1,515 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guldensporenslag Geogame</title>
-    <style>
-        :root {
-            --primary-color: #E5A93C;
-            --primary-dark: #c48b27;
-            --bg-color: #1a1a1a;
-            --card-bg: #2d2d2d;
-            --text-color: #ffffff;
-            --text-muted: #b3b3b3;
-            --success-color: #2e7d32;
-            --error-color: #c62828;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guldensporenslag Geogame</title>
+    <style>
+        :root {
+            --primary-color: #E5A93C;
+            --primary-dark: #c48b27;
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --text-muted: #b3b3b3;
+            --success-color: #2e7d32;
+            --error-color: #c62828;
+        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 15px;
-        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
 
-        .app-container {
-            width: 100%;
-            max-width: 500px;
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 550px;
-            position: relative;
-        }
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 550px;
+            position: relative;
+        }
 
-        .header {
-            background-color: #222;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 2px solid var(--primary-color);
-            font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-        }
+        .header {
+            background-color: #222;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
 
-        .progress-bar {
-            height: 4px;
-            background-color: #444;
-            width: 100%;
-        }
+        .progress-bar {
+            height: 4px;
+            background-color: #444;
+            width: 100%;
+        }
 
-        .progress-fill {
-            height: 100%;
-            background-color: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
 
-        .screen {
-            display: none;
-            padding: 20px;
-            flex-direction: column;
-            flex-grow: 1;
-            justify-content: space-between;
-        }
+        .screen {
+            display: none;
+            padding: 20px;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
 
-        .screen.active {
-            display: flex;
-        }
+        .screen.active {
+            display: flex;
+        }
 
-        h2 {
-            font-size: 1.3rem;
-            margin-bottom
+        h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            color: #fff;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .image-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .images-side-by-side {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .images-side-by-side div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .images-side-by-side img {
+            max-width: 100%;
+            height: auto;
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .options-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .option-btn {
+            width: 100%;
+            background-color: #3a3a3a;
+            color: white;
+            border: 2px solid transparent;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.correct {
+            background-color: var(--success-color) !important;
+            border-color: #4caf50;
+        }
+
+        .option-btn.incorrect {
+            background-color: var(--error-color) !important;
+            border-color: #f44336;
+            animation: shake 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .feedback-message {
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .feedback-message.error {
+            display: block;
+            background-color: rgba(198, 40, 40, 0.2);
+            color: #ff8a80;
+            border: 1px solid var(--error-color);
+        }
+
+        .gps-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #444;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .code-box {
+            background-color: #222;
+            border: 2px dashed var(--primary-color);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: var(--primary-color);
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .badge {
+            background-color: rgba(229, 169, 60, 0.15);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">Guldensporenslag Geogame</div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBarFill"></div>
+    </div>
+
+    <div class="screen active" id="screen-gps">
+        <div class="gps-loading">
+            <div class="spinner" id="gps-spinner"></div>
+            <h2 id="gps-title">GPS-Controle</h2>
+            <p id="gps-text">Om deze missie te starten, moeten we controleren of je je in de buurt van de historische locatie bevindt. Geef akkoord voor locatiegegevens.</p>
+            <button class="btn-primary" id="btn-allow-gps" onclick="requestLocation()">Activeer GPS</button>
+        </div>
+    </div>
+
+    <div class="screen" id="screen-welcome">
+        <div>
+            <div class="badge-container"><span class="badge">Welkom</span></div>
+            <h2>Guldensporenslag<br><span style="font-size: 1rem; color: var(--primary-color);">(Slag bij Kortrijk)</span></h2>
+            <div class="image-container">
+                <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c4f5ac2ed7/content/images/2026/03/1-35.webp" alt="Guldensporenslag">
+            </div>
+            <p>De slag was het gevolg van de Vlaamse Opstand. De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.</p>
+        </div>
+        <button class="btn-primary" onclick="nextScreen(2)">Start de Missie</button>
+    </div>
+
+    <div class="screen" id="screen-q1">
+        <div>
+            <div class="badge-container"><span class="badge">Vraag 1 van 5</span></div>
+            <h2>Onder welke graaf vond de Guldensporenslag plaats?</h2>
+            <div id="feedback-q1" class="feedback-message error">Fout antwoord! Probeer het nog eens.</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="checkAnswer(1, 'Filips de Schone', this)">Filips de Schone</button>
+                <button class="option-btn" onclick="checkAnswer(1, 'Gwijde van Dampierre', this)">Gwijde van Dampierre</button>
+                <button class="option-btn" onclick="checkAnswer(1, 'Robrecht van Bethune', this)">Robrecht van Bethune</button>
+                <button class="option-btn" onclick="checkAnswer(1, 'Lodewijk van Nevers', this)">Lodewijk van Nevers</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="screen-q2">
+        <div>
+            <div class="badge-container"><span class="badge">Vraag 2 van 5</span></div>
+            <h2>Wanneer vond de Guldensporenslag plaats?</h2>
+            <div id="feedback-q2" class="feedback-message error">Fout antwoord! Probeer het nog eens.</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="checkAnswer(2, '11 juli 1302', this)">11 juli 1302</button>
+                <button class="option-btn" onclick="checkAnswer(2, '11 juli 1382', this)">11 juli 1382</button>
+                <button class="option-btn" onclick="checkAnswer(2, '13 juli 1302', this)">13 juli 1302</button>
+                <button class="option-btn" onclick="checkAnswer(2, '11 juli 1297', this)">11 juli 1297</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="screen-q3">
+        <div>
+            <div class="badge-container"><span class="badge">Vraag 3 van 5</span></div>
+            <h2>Tegen welk leger vocht het Vlaamse leger?</h2>
+            
+            <div class="images-side-by-side">
+                <div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" alt="Vlaamse Leger">
+                    <div style="font-size: 0.8rem; margin-top: 5px; color: var(--primary-color);">Vlaamse leger</div>
+                </div>
+                <div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" alt="Franse Leger">
+                    <div style="font-size: 0.8rem; margin-top: 5px; color: #4ba3e3;">Franse leger</div>
+                </div>
+            </div>
+
+            <div id="feedback-q3" class="feedback-message error">Fout antwoord! Probeer het nog eens.</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="checkAnswer(3, 'Engelse leger', this)">Engelse leger</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'Duitse leger', this)">Duitse leger</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'Franse leger', this)">Franse leger</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'Spaanse leger', this)">Spaanse leger</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="screen-q4">
+        <div>
+            <div class="badge-container"><span class="badge">Vraag 4 van 5</span></div>
+            <h2 style="font-size: 1.15rem;">Welk objectnummer vind je terug bij de punt van een goedendag?</h2>
+            <p style="font-size: 0.85rem; margin-bottom: 10px;">De term "goedendag" is een middeleeuws wapen. De verwarring met een "punt maar geen bol" ontstaat doordat dit wapen een zware houten knots is met een metalen piek/punt aan de bovenkant, in plaats van een metalen bol (zoals bij een morgenster of strijdvlegel hieronder).</p>
+            
+            <div class="images-side-by-side" style="margin-bottom: 10px;">
+                <div style="flex: 0.4;">
+                    <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png" alt="Strijdvlegel" style="max-height: 80px;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Strijdvlegel</div>
+                </div>
+                <div style="flex: 0.6;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG" alt="Goedendags" style="max-height: 80px;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Museum Kortrijk 1302</div>
+                </div>
+            </div>
+
+            <div id="feedback-q4" class="feedback-message error">Fout antwoord! Probeer het nog eens.</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="checkAnswer(4, '3', this)">3</button>
+                <button class="option-btn" onclick="checkAnswer(4, '5', this)">5</button>
+                <button class="option-btn" onclick="checkAnswer(4, '8', this)">8</button>
+                <button class="option-btn" onclick="checkAnswer(4, '12', this)">12</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="screen-q5">
+        <div>
+            <div class="badge-container"><span class="badge">Vraag 5 van 5</span></div>
+            <h2 style="font-size: 1.15rem;">Welk objectnummer vind je terug bij het Guldenspoor?</h2>
+            <p style="font-size: 0.85rem; margin-bottom: 10px;">De Vlamingen vonden op het slagveld – volgens de versie van Hendrik Conscience – minstens vijfhonderd vergulde sporen, vandaar de naam van de slag. Alleen adellijke ridders konden zich dit veroorloven.</p>
+            
+            <div class="image-container" style="margin-bottom: 10px;">
+                <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg" alt="Guldenspoor objecten" style="max-height: 120px;">
+            </div>
+
+            <div id="feedback-q5" class="feedback-message error">Fout antwoord! Probeer het nog eens.</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="checkAnswer(5, '1', this)">1</button>
+                <button class="option-btn" onclick="checkAnswer(5, '3', this)">3</button>
+                <button class="option-btn" onclick="checkAnswer(5, '5', this)">5</button>
+                <button class="option-btn" onclick="checkAnswer(5, '7', this)">7</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="screen-end">
+        <div style="text-align: center;">
+            <div class="badge-container"><span class="badge" style="background-color: var(--success-color); color: white;">Voltooid!</span></div>
+            <h2 style="color: var(--primary-color);">Proficiat, je hebt de missie voltooid!</h2>
+            <p style="color: #fff; margin-top: 15px;">Je kan de schatkist om de cache te loggen vinden in het infopunt, hierin ligt het logboek en de code voor RV Vlaanderen.</p>
+            
+            <div style="margin-top: 25px; border-top: 1px solid #444; padding-top: 15px;">
+                <span style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); font-weight: bold;">Controlecode (Dagcode):</span>
+                <div class="code-box" id="dailyCodeBox">----</div>
+            </div>
+            
+            <p style="font-size: 0.9rem; font-style: italic; color: var(--primary-color); margin-top: 15px; font-weight: bold;">
+                Toon dit scherm met de code in het infopunt
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const correctAnswers = {
+        1: "Gwijde van Dampierre",
+        2: "11 juli 1302",
+        3: "Franse leger",
+        4: "8",
+        5: "3"
+    };
+
+    const dailyCodes = {
+        1: "4817", 2: "9023", 3: "6631", 4: "1184", 5: "5502", 6: "7391", 7: "2048", 8: "9912", 9: "3305",
+        10: "7816", 11: "4129", 12: "8730", 13: "2951", 14: "6402", 15: "5189", 16: "9031", 17: "7740",
+        18: "1106", 19: "5628", 20: "3381", 21: "9845", 22: "2719", 23: "6603", 24: "1457", 25: "8092",
+        26: "4530", 27: "9921", 28: "3674", 29: "7125", 30: "8806", 31: "5093"
+    };
+
+    // Initialize daily code gebaseerd op de datum
+    function setupDailyCode() {
+        const today = new Date().getDate();
+        const code = dailyCodes[today] || "4817";
+        document.getElementById('dailyCodeBox').innerText = code;
+    }
+
+    // Handelt het simuleren van een GPS-check af
+    function requestLocation() {
+        const spinner = document.getElementById('gps-spinner');
+        const btn = document.getElementById('btn-allow-gps');
+        const text = document.getElementById('gps-text');
+        
+        btn.style.display = 'none';
+        spinner.style.display = 'block';
+        text.innerText = "GPS-signaal zoeken en locatie verifiëren...";
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    text.innerText = "Locatie succesvol geverifieerd!";
+                    setTimeout(() => {
+                        nextScreen('welcome');
+                    }, 1200);
+                },
+                (error) => {
+                    text.innerText = "GPS-signaal niet optimaal, maar je mag doorgaan naar de missie.";
+                    setTimeout(() => {
+                        nextScreen('welcome');
+                    }, 2000);
+                },
+                { enableHighAccuracy: true, timeout: 6000 }
+            );
+        } else {
+            text.innerText = "Je apparaat ondersteunt geen GPS, je wordt doorgestuurd.";
+            setTimeout(() => {
+                nextScreen('welcome');
+            }, 1500);
+        }
+    }
+
+    // Wisselt van "scherm" door CSS classes aan te passen
+    function nextScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        
+        const target = document.getElementById('screen-' + screenId);
+        if (target) target.classList.add('active');
+
+        const progressFill = document.getElementById('progressBarFill');
+        if (screenId === 'gps') progressFill.style.width = '0%';
+        else if (screenId === 'welcome') progressFill.style.width = '10%';
+        else if (screenId === 'q1') progressFill.style.width = '25%';
+        else if (screenId === 'q2') progressFill.style.width = '40%';
+        else if (screenId === 'q3') progressFill.style.width = '55%';
+        else if (screenId === 'q4') progressFill.style.width = '70%';
+        else if (screenId === 'q5') progressFill.style.width = '85%';
+        else if (screenId === 'end') progressFill.style.width = '100%';
+    }
+
+    // Controleert of het antwoord juist is
+    function checkAnswer(questionNum, selectedAnswer, buttonElement) {
+        const feedback = document.getElementById('feedback-q' + questionNum);
+        const correctAnswer = correctAnswers[questionNum];
+
+        const siblingButtons = buttonElement.parentElement.querySelectorAll('.option-btn');
+        siblingButtons.forEach(btn => {
+            btn.classList.remove('correct', 'incorrect');
+        });
+
+        if (selectedAnswer === correctAnswer) {
+            buttonElement.classList.add('correct');
+            if (feedback) feedback.style.display = 'none';
+            
+            setTimeout(() => {
+                if (questionNum < 5) {
+                    nextScreen('q' + (questionNum + 1));
+                } else {
+                    setupDailyCode();
+                    nextScreen('end');
+                }
+            }, 800);
+        } else {
+            buttonElement.classList.add('incorrect');
+            if (feedback) feedback.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
