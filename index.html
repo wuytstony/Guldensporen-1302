@@ -2,211 +2,504 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Guldensporenslag Geocache</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Guldensporenslag — Kortrijk 1302</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 20px;
-}
+  /* ============================================================
+     CONFIG — pas deze waarden aan vóór je publiceert
+     ============================================================ */
+  :root{
+    --parchment: #EDE0C0;
+    --parchment-dark: #E2D2A4;
+    --ink: #3B2415;
+    --ink-soft: #5C3A21;
+    --gold: #B8860B;
+    --gold-bright: #D9A93B;
+    --red: #8C1D1D;
+    --black: #1C1712;
+    --shadow: rgba(30, 18, 8, 0.35);
+  }
 
-.page {
-  display: none;
-}
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'EB Garamond', serif;
+    color:var(--ink);
+    background:
+      radial-gradient(ellipse at top left, rgba(255,240,200,0.25), transparent 60%),
+      radial-gradient(ellipse at bottom right, rgba(90,50,10,0.18), transparent 55%),
+      var(--parchment);
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px 14px;
+  }
 
-.active {
-  display: block;
-}
+  /* subtle aged paper grain */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(92,58,33,0.035) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(0deg, rgba(92,58,33,0.03) 0 1px, transparent 1px 3px);
+    pointer-events:none;
+    mix-blend-mode:multiply;
+  }
 
-button {
-  display: block;
-  margin: 10px auto;
-  padding: 12px;
-  width: 80%;
-  max-width: 500px;
-  font-size: 16px;
-}
+  .card{
+    position:relative;
+    width:100%;
+    max-width:560px;
+    background: linear-gradient(180deg, #F3E8C9, #EAD9AC);
+    border-radius: 4px;
+    padding: 34px 28px 30px;
+    box-shadow:
+      0 2px 0 var(--gold),
+      0 18px 40px var(--shadow),
+      inset 0 0 0 1px rgba(92,58,33,0.25),
+      inset 0 0 60px rgba(92,58,33,0.08);
+  }
+  .card::before{
+    content:"";
+    position:absolute; inset:8px;
+    border: 1px solid rgba(92,58,33,0.35);
+    pointer-events:none;
+  }
+  .card::after{
+    content:"";
+    position:absolute; inset:11px;
+    border: 1px solid rgba(184,134,11,0.35);
+    pointer-events:none;
+  }
 
-img {
-  max-width: 90%;
-  margin: 10px 0;
-}
+  h1,h2,.display{
+    font-family:'Cinzel Decorative', serif;
+    color:var(--ink);
+    letter-spacing:0.5px;
+    line-height:1.25;
+  }
+  h1{font-size: clamp(1.5rem, 5vw, 2.05rem); margin: 6px 0 14px; text-align:center;}
+  h2{font-size: clamp(1.15rem, 4vw, 1.4rem); margin: 0 0 16px; text-align:center;}
+  .eyebrow{
+    font-family:'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align:center;
+    margin-bottom: 6px;
+  }
+  p{font-size:1.08rem; line-height:1.6; margin: 0 0 14px;}
+  .lede{font-size:1.12rem; color:var(--ink-soft); font-style:italic;}
+
+  img.scene{
+    width:100%; display:block; border-radius:2px;
+    margin: 14px 0 18px;
+    box-shadow: 0 6px 18px rgba(30,18,8,0.35), inset 0 0 0 1px rgba(92,58,33,0.4);
+  }
+
+  /* ---------- progress: golden spurs ---------- */
+  .spurs{
+    display:flex; justify-content:center; gap:10px;
+    margin-bottom: 18px;
+  }
+  .spur{
+    width:26px; height:26px;
+    opacity: 0.28;
+    filter: grayscale(1);
+    transition: all 0.5s ease;
+  }
+  .spur.won{
+    opacity: 1;
+    filter: grayscale(0) drop-shadow(0 0 4px rgba(217,169,59,0.7));
+    transform: scale(1.12);
+  }
+
+  /* ---------- buttons ---------- */
+  button{
+    font-family:'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    cursor:pointer;
+    border:none;
+    border-radius: 3px;
+  }
+  .btn-primary{
+    display:block; width:100%;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+    color: #2b1c08;
+    font-weight:600;
+    padding: 13px 18px;
+    box-shadow: 0 3px 0 #7a5c07, 0 6px 14px rgba(30,18,8,0.3);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .btn-primary:hover{ transform: translateY(-1px); }
+  .btn-primary:active{ transform: translateY(2px); box-shadow: 0 1px 0 #7a5c07; }
+  .btn-primary:disabled{ opacity:0.5; cursor:not-allowed; transform:none; box-shadow:0 3px 0 #7a5c07;}
+  .btn-primary:focus-visible{ outline: 2px solid var(--red); outline-offset: 3px; }
+
+  .option{
+    display:block; width:100%; text-align:left;
+    background: rgba(255,251,238,0.55);
+    color: var(--ink);
+    border: 1px solid rgba(92,58,33,0.4) !important;
+    padding: 13px 16px;
+    margin-bottom: 10px;
+    font-family:'EB Garamond', serif;
+    font-size: 1.05rem;
+    transition: background 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
+  }
+  .option:hover{ background: rgba(255,251,238,0.9); }
+  .option:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+  .option.correct{ background: #dcead0; border-color:#4c7a34 !important; }
+  .option.wrong{ background: #f0d3d0; border-color: var(--red) !important; animation: shake 0.35s; }
+  .option.disabled{ pointer-events:none; opacity:0.75; }
+
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-6px);}
+    40%{transform:translateX(6px);}
+    60%{transform:translateX(-4px);}
+    80%{transform:translateX(4px);}
+  }
+
+  .feedback{
+    min-height: 22px;
+    text-align:center;
+    font-family:'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing:0.5px;
+    margin: 6px 0 4px;
+  }
+  .feedback.ok{ color:#3d6524; }
+  .feedback.no{ color: var(--red); }
+
+  .img-row{ display:flex; gap:12px; margin: 14px 0 6px; }
+  .img-row figure{ flex:1; margin:0; text-align:center; }
+  .img-row img{
+    width:100%; aspect-ratio:1/1; object-fit:contain;
+    background: rgba(255,255,255,0.5);
+    border-radius:2px;
+    box-shadow: inset 0 0 0 1px rgba(92,58,33,0.4);
+    padding: 8px;
+  }
+  .img-row figcaption{
+    font-family:'Cinzel', serif;
+    font-size:0.78rem; letter-spacing:1px; text-transform:uppercase;
+    color: var(--ink-soft); margin-top:6px;
+  }
+
+  .gps-icon{ display:block; margin: 4px auto 18px; }
+  .gps-status{
+    text-align:center; min-height:24px;
+    font-style:italic; color:var(--ink-soft); margin-bottom:14px;
+  }
+
+  .code-box{
+    margin: 20px auto 6px;
+    text-align:center;
+    padding: 16px 10px;
+    border: 2px solid var(--gold);
+    background: rgba(184,134,11,0.08);
+    border-radius: 3px;
+  }
+  .code-box .label{
+    font-family:'Cinzel', serif; font-size:0.75rem; letter-spacing:3px;
+    text-transform:uppercase; color: var(--ink-soft); margin-bottom:6px;
+  }
+  .code-box .code{
+    font-family:'Cinzel Decorative', serif;
+    font-size: 2rem; letter-spacing: 8px; color: var(--red);
+  }
+
+  .note{
+    text-align:center; font-size:0.92rem; color:var(--ink-soft);
+    margin-top: 14px; font-style:italic;
+  }
+
+  .screen{ display:none; }
+  .screen.active{
+    display:block;
+    animation: pageIn 0.5s ease;
+  }
+  @keyframes pageIn{
+    from{ opacity:0; transform: translateY(8px) scale(0.99); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .screen.active{ animation:none; }
+    .spur{ transition:none; }
+  }
+
+  footer.hint{
+    text-align:center; margin-top:16px; font-size:0.8rem; color: rgba(92,58,33,0.55);
+  }
 </style>
 </head>
-
 <body>
 
-<!-- GPS START -->
-<div id="p0" class="page active">
-  <h1>Guldensporenslag Geocache</h1>
-  <p>Je kan enkel starten in de OLV-kerk.</p>
+<div class="card">
 
-  <button onclick="checkGPS()">Start controle</button>
-  <p id="msg"></p>
+  <!-- progress: shown on question screens only -->
+  <div class="spurs" id="spurBar" style="display:none;"></div>
+
+  <!-- ============ SCREEN 0: GPS CHECK ============ -->
+  <section class="screen active" data-screen="gps">
+    <div class="eyebrow">Guldensporenslag · 1302</div>
+    <h1>Sta je op de juiste plek?</h1>
+    <svg class="gps-icon" width="64" height="64" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8z" stroke="#8C1D1D" stroke-width="1.4" fill="#D9A93B" fill-opacity="0.25"/>
+      <circle cx="12" cy="10" r="3" stroke="#8C1D1D" stroke-width="1.4"/>
+    </svg>
+    <p style="text-align:center;">Voor we de missie beginnen: controleer of je op het startpunt van het slagveld staat.</p>
+    <div class="gps-status" id="gpsStatus">Klik hieronder om je locatie te controleren.</div>
+    <button class="btn-primary" id="gpsBtn">Controleer mijn locatie</button>
+    <div class="note">Werkt je GPS niet goed binnenshuis? Ga even naar buiten voor een beter signaal.</div>
+  </section>
+
+  <!-- ============ SCREEN 1: WELKOM ============ -->
+  <section class="screen" data-screen="welcome">
+    <div class="eyebrow">Kortrijk, 11 juli 1302</div>
+    <h1>Guldensporenslag<br><span style="font-size:0.6em; opacity:0.85;">(Slag bij Kortrijk)</span></h1>
+    <img class="scene" src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c4f5ac2ed7/content/images/2026/03/1-35.webp" alt="Guldensporenslag">
+    <p>De slag was het gevolg van de Vlaamse Opstand. De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.</p>
+    <button class="btn-primary" id="startBtn">Begin de missie</button>
+  </section>
+
+  <!-- ============ SCREEN 2: VRAAG 1 ============ -->
+  <section class="screen" data-screen="q1">
+    <h2>Onder welke graaf vond de Guldensporenslag plaats?</h2>
+    <div class="options" id="q1-options"></div>
+    <div class="feedback" id="q1-feedback"></div>
+  </section>
+
+  <!-- ============ SCREEN 3: VRAAG 2 ============ -->
+  <section class="screen" data-screen="q2">
+    <h2>Wanneer vond de Guldensporenslag plaats?</h2>
+    <div class="options" id="q2-options"></div>
+    <div class="feedback" id="q2-feedback"></div>
+  </section>
+
+  <!-- ============ SCREEN 4: VRAAG 3 ============ -->
+  <section class="screen" data-screen="q3">
+    <h2>Tegen welk leger vocht het Vlaamse leger?</h2>
+    <div class="img-row">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" alt="Vlaamse leger wapenschild">
+        <figcaption>Vlaamse leger</figcaption>
+      </figure>
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" alt="Franse leger wapenschild">
+        <figcaption>Franse leger</figcaption>
+      </figure>
+    </div>
+    <div class="options" id="q3-options"></div>
+    <div class="feedback" id="q3-feedback"></div>
+  </section>
+
+  <!-- ============ SCREEN 5: VRAAG 4 ============ -->
+  <section class="screen" data-screen="q4">
+    <h2>De goedendag</h2>
+    <p>De term "goedendag" is een middeleeuws wapen. De verwarring met "een punt maar geen bol" ontstaat doordat dit wapen een zware houten knots is met een metalen piek/punt aan de bovenkant, in plaats van een metalen bol zoals bij een morgenster of strijdvlegel.</p>
+    <img class="scene" src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png" alt="Vergelijking strijdvlegel">
+    <img class="scene" src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG" alt="Goedendags in museum Kortrijk 1302">
+    <h2 style="margin-top:6px;">Welk objectnummer vind je terug bij de punt van een goedendag?</h2>
+    <div class="options" id="q4-options"></div>
+    <div class="feedback" id="q4-feedback"></div>
+  </section>
+
+  <!-- ============ SCREEN 6: VRAAG 5 ============ -->
+  <section class="screen" data-screen="q5">
+    <h2>Het Guldenspoor</h2>
+    <p>De Vlamingen vonden op het slagveld — volgens de versie van Hendrik Conscience — minstens vijfhonderd vergulde sporen, vandaar de (moderne) naam van de slag. Alleen adellijke ridders konden zich de aankoop van vergulde sporen veroorloven.</p>
+    <img class="scene" src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg" alt="Guldenspoor">
+    <h2 style="margin-top:6px;">Welk objectnummer vind je terug bij het Guldenspoor?</h2>
+    <div class="options" id="q5-options"></div>
+    <div class="feedback" id="q5-feedback"></div>
+  </section>
+
+  <!-- ============ SCREEN 7: EINDE ============ -->
+  <section class="screen" data-screen="end">
+    <div class="spurs" id="spurBarEnd"></div>
+    <h1>Proficiat, je hebt de missie voltooid!</h1>
+    <p style="text-align:center;">Je kan de schatkist om de cache te loggen vinden in het infopunt. Hierin ligt het logboek en de code voor RV Vlaanderen.</p>
+    <div class="code-box">
+      <div class="label">Controlecode (dagcode)</div>
+      <div class="code" id="dagcodeDisplay">----</div>
+    </div>
+    <p class="note">Toon dit scherm met de code in het infopunt.</p>
+  </section>
+
 </div>
 
-<!-- WELKOM -->
-<div id="p1" class="page">
-  <h2>Welkom</h2>
-
-  <p>
-  De slag was het gevolg van de Vlaamse Opstand.
-  De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.
-  </p>
-
-  <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c5f4ac2ed7/content/images/2026/03/1-35.webp">
-
-  <button onclick="next()">Start missie</button>
-</div>
-
-<!-- VRAAG 1 -->
-<div id="p2" class="page">
-  <h2>1. Onder welke graaf vond de Guldensporenslag plaats?</h2>
-
-  <button onclick="wrong()">Filips de Schone</button>
-  <button onclick="wrong()">Robrecht van Bethune</button>
-  <button onclick="correct()">Gwijde van Dampierre</button>
-  <button onclick="wrong()">Lodewijk IX</button>
-</div>
-
-<!-- VRAAG 2 -->
-<div id="p3" class="page">
-  <h2>2. Wanneer vond de Guldensporenslag plaats?</h2>
-
-  <button onclick="wrong()">11 juli 1303</button>
-  <button onclick="correct()">11 juli 1302</button>
-  <button onclick="wrong()">18 mei 1302</button>
-  <button onclick="wrong()">23 augustus 1302</button>
-</div>
-
-<!-- VRAAG 3 -->
-<div id="p4" class="page">
-  <h2>3. Tegen welk leger vocht het Vlaamse leger?</h2>
-
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" width="150">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" width="150">
-
-  <p>Links = Vlaams / Rechts = Frans</p>
-
-  <button onclick="wrong()">Engels leger</button>
-  <button onclick="correct()">Franse leger</button>
-  <button onclick="wrong()">Duits leger</button>
-  <button onclick="wrong()">Bourgondisch leger</button>
-</div>
-
-<!-- VRAAG 4 -->
-<div id="p5" class="page">
-  <h2>4. Wat is het juiste objectnummer bij de punt van een goedendag?</h2>
-
-  <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png" width="200">
-
-  <button onclick="wrong()">1</button>
-  <button onclick="correct()">3</button>
-  <button onclick="wrong()">5</button>
-  <button onclick="wrong()">7</button>
-</div>
-
-<!-- VRAAG 5 -->
-<div id="p6" class="page">
-  <h2>5. Welk objectnummer hoort bij het Guldenspoor?</h2>
-
-  <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg" width="200">
-
-  <button onclick="wrong()">2</button>
-  <button onclick="wrong()">4</button>
-  <button onclick="correct()">6</button>
-  <button onclick="wrong()">9</button>
-</div>
-
-<!-- EINDE -->
-<div id="p7" class="page">
-  <h2>🎉 Proficiat, missie voltooid!</h2>
-
-  <p>
-    Je kan de schatkist vinden in het infopunt.
-    Hierin ligt het logboek en de code voor RV Vlaanderen.
-  </p>
-
-  <h3>Controlecode:</h3>
-  <p id="code"></p>
-
-  <p><b>Toon dit scherm in het infopunt</b></p>
-</div>
+<footer class="hint" id="devHint"></footer>
 
 <script>
+/* ============================================================
+   CONFIG — PAS DIT AAN VOOR PUBLICATIE
+   ============================================================ */
+const CONFIG = {
+  // GPS-startpunt van de cache. Placeholder = Groeningemonument, Kortrijk.
+  // ⚠️ Vervang door de exacte coördinaten van jouw startpunt.
+  gps: {
+    lat: 50.8248,
+    lng: 3.2696,
+    radiusMeters: 150
+  },
 
-/* GPS */
-const lat = 50.8586;
-const lon = 3.3233;
-const radius = 10;
+  // Dagcode / controlecode die op het eindscherm getoond wordt.
+  // ⚠️ Vervang door jouw eigen code.
+  dagcode: "1302",
 
-/* DAGCODES */
-const codes = {
-  1:"4817",2:"9023",3:"6631",4:"1184",5:"5502",
-  6:"7391",7:"2048",8:"9912",9:"3305",10:"7816",
-  11:"4129",12:"8730",13:"2951",14:"6402",15:"5189",
-  16:"9031",17:"7740",18:"1106",19:"5628",20:"3381",
-  21:"9845",22:"2719",23:"6603",24:"1457",25:"8092",
-  26:"4530",27:"9921",28:"3674",29:"7125",30:"8806",
-  31:"5093"
+  questions: {
+    q1: {
+      options: ["Gwijde van Dampierre", "Lodewijk van Male", "Filips de Goede", "Karel de Stoute"],
+      correct: 0
+    },
+    q2: {
+      options: ["11 juli 1302", "14 juli 1302", "11 juli 1312", "11 juli 1345"],
+      correct: 0
+    },
+    q3: {
+      options: ["Franse leger", "Engelse leger", "Duitse leger", "Bourgondische leger"],
+      correct: 0
+    },
+    // ⚠️ Vul hieronder het echte objectnummer in dat op de foto bij de goedendag-punt
+    // te vinden is, plus 3 geloofwaardige foute nummers.
+    q4: {
+      options: ["07", "12", "23", "31"],
+      correct: 0
+    },
+    // ⚠️ Vul hieronder het echte objectnummer in dat op de foto bij het guldenspoor
+    // te vinden is, plus 3 geloofwaardige foute nummers.
+    q5: {
+      options: ["04", "09", "15", "18"],
+      correct: 0
+    }
+  }
 };
 
-let page = 0;
+/* ============================================================
+   APP LOGICA — normaal gezien hoef je hier niets aan te wijzigen
+   ============================================================ */
+const order = ["gps", "welcome", "q1", "q2", "q3", "q4", "q5", "end"];
+const questionOrder = ["q1", "q2", "q3", "q4", "q5"];
+let current = 0;
+let spursWon = 0;
 
-function show(p){
-  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-  document.getElementById("p"+p).classList.add('active');
+const screens = {};
+order.forEach(id => screens[id] = document.querySelector(`[data-screen="${id}"]`));
+
+function spurSVG(won){
+  return `<svg class="spur ${won ? 'won' : ''}" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="4.2" fill="${won ? '#D9A93B' : '#8a7a55'}" stroke="#5C3A21" stroke-width="0.8"/>
+    <path d="M12 3v3.2M12 21v-3.2M21 12h-3.2M6.2 12H3M18.4 5.6l-2.3 2.3M7.9 16.1l-2.3 2.3M18.4 18.4l-2.3-2.3M7.9 7.9L5.6 5.6"
+      stroke="${won ? '#D9A93B' : '#8a7a55'}" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>`;
 }
 
-/* GPS CHECK */
-function checkGPS(){
-  navigator.geolocation.getCurrentPosition(pos=>{
-    const d = distance(pos.coords.latitude,pos.coords.longitude,lat,lon);
+function renderSpurBar(){
+  const html = questionOrder.map((q,i) => spurSVG(i < spursWon)).join("");
+  document.getElementById("spurBar").innerHTML = html;
+  document.getElementById("spurBarEnd").innerHTML = html;
+}
 
-    if(d <= radius){
-      show(1);
-    } else {
-      document.getElementById("msg").innerText =
-        "Niet in de kerk ("+Math.round(d)+"m)";
-    }
+function goTo(screenId){
+  order.forEach(id => screens[id].classList.remove("active"));
+  screens[screenId].classList.add("active");
+  current = order.indexOf(screenId);
+  document.getElementById("spurBar").style.display = questionOrder.includes(screenId) ? "flex" : "none";
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function nextScreen(){
+  goTo(order[current + 1]);
+}
+
+/* ---------- GPS check ---------- */
+function haversine(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+document.getElementById("gpsBtn").addEventListener("click", () => {
+  const statusEl = document.getElementById("gpsStatus");
+  const btn = document.getElementById("gpsBtn");
+  if (!navigator.geolocation){
+    statusEl.textContent = "Locatiebepaling wordt niet ondersteund door dit toestel.";
+    return;
+  }
+  statusEl.textContent = "Bezig met je locatie zoeken…";
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const dist = haversine(pos.coords.latitude, pos.coords.longitude, CONFIG.gps.lat, CONFIG.gps.lng);
+      btn.disabled = false;
+      if (dist <= CONFIG.gps.radiusMeters){
+        statusEl.textContent = `Correcte locatie bevestigd (±${Math.round(dist)} m).`;
+        setTimeout(nextScreen, 700);
+      } else {
+        statusEl.textContent = `Je bent nog ${Math.round(dist)} m van het startpunt. Kom dichterbij en probeer opnieuw.`;
+      }
+    },
+    err => {
+      btn.disabled = false;
+      statusEl.textContent = "Locatie kon niet bepaald worden. Controleer of locatietoegang is toegestaan.";
+    },
+    { enableHighAccuracy: true, timeout: 12000 }
+  );
+});
+
+document.getElementById("startBtn").addEventListener("click", nextScreen);
+
+/* ---------- Vragen renderen ---------- */
+function renderQuestion(qid){
+  const data = CONFIG.questions[qid];
+  const container = document.getElementById(`${qid}-options`);
+  const feedback = document.getElementById(`${qid}-feedback`);
+  container.innerHTML = "";
+  feedback.textContent = "";
+  feedback.className = "feedback";
+
+  data.options.forEach((label, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = label;
+    btn.addEventListener("click", () => {
+      if (btn.classList.contains("disabled")) return;
+      const allBtns = container.querySelectorAll(".option");
+      if (idx === data.correct){
+        allBtns.forEach(b => b.classList.add("disabled"));
+        btn.classList.add("correct");
+        feedback.textContent = "Juist! Op naar het volgende deel van het verhaal.";
+        feedback.classList.add("ok");
+        spursWon = Math.min(spursWon + 1, questionOrder.length);
+        renderSpurBar();
+        setTimeout(nextScreen, 900);
+      } else {
+        btn.classList.add("wrong");
+        feedback.textContent = "Niet juist — probeer het nog eens.";
+        feedback.classList.add("no");
+        setTimeout(() => btn.classList.remove("wrong"), 400);
+      }
+    });
+    container.appendChild(btn);
   });
 }
 
-function distance(a,b,c,d){
-  const R=6371e3;
-  const φ1=a*Math.PI/180;
-  const φ2=c*Math.PI/180;
-  const dφ=(c-a)*Math.PI/180;
-  const dλ=(d-b)*Math.PI/180;
+questionOrder.forEach(renderQuestion);
+renderSpurBar();
 
-  const x=Math.sin(dφ/2)**2+
-          Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
-
-  return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
-}
-
-/* NAVIGATIE */
-function next(){
-  page++;
-  show(page+1);
-}
-
-function correct(){
-  page++;
-  show(page+1);
-
-  if(page === 6){
-    const day = new Date().getDate();
-    document.getElementById("code").innerText = codes[day];
-  }
-}
-
-function wrong(){
-  alert("Fout antwoord, probeer opnieuw");
-}
-
+/* ---------- Einde ---------- */
+document.getElementById("dagcodeDisplay").textContent = CONFIG.dagcode;
 </script>
-
 </body>
 </html>
