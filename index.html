@@ -2,18 +2,17 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Guldensporenslag Missie</title>
     <style>
         :root {
-            --primary-color: #FFC107; /* Warm, helder Vlaams goudgeel */
-            --primary-dark: #FFA000;
-            --bg-color: #EBF0F5; /* Frisse, lichte achtergrond */
-            --card-bg: #FFFFFF; /* Wit voor maximale leesbaarheid */
-            --text-main: #2C3E50; /* Donkergrijs/blauw voor hoog contrast */
-            --text-muted: #566573;
-            --success-color: #2ECC71; /* Helder groen */
-            --error-color: #E74C3C; /* Helder rood */
+            --primary-color: #FFC107; /* Goudgeel */
+            --bg-color: #000000; /* Zwarte achtergrond */
+            --card-bg: #121212; /* Donkergrijze app container */
+            --text-main: #FFFFFF; /* Witte tekst */
+            --text-muted: #B3B3B3; /* Lichtgrijze tekst voor extra info */
+            --success-color: #2ECC71; 
+            --error-color: #E74C3C; 
         }
 
         * {
@@ -21,6 +20,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Voorkomt blauwe flikkering bij tikken op mobiel */
         }
 
         body {
@@ -30,39 +30,31 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
         }
 
-        /* Container die perfect lijkt op een native smartphone app */
+        /* Container vult het volledige mobiele scherm */
         .app-container {
             width: 100%;
-            max-width: 430px;
+            max-width: 500px;
             background-color: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 620px;
-            border: 4px solid #FFFFFF;
+            min-height: 100vh;
         }
 
-        /* Heldere, vriendelijke top bar */
         .header {
-            background-color: #1A252F;
+            background-color: #1A1A1A;
             color: #FFFFFF;
-            padding: 18px;
+            padding: 20px;
             text-align: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
+            font-weight: 800;
+            font-size: 1.5rem;
             border-bottom: 4px solid var(--primary-color);
         }
 
-        /* Duidelijke progressiebalk voor jongeren */
         .progress-container {
-            background-color: #E5E8E8;
-            height: 8px;
+            background-color: #333;
+            height: 10px;
             width: 100%;
         }
 
@@ -73,220 +65,222 @@
             transition: width 0.4s ease;
         }
 
-        /* Elk scherm is standaard onzichtbaar totdat het de 'active' class krijgt */
         .screen {
             display: none;
-            padding: 24px;
+            padding: 30px 20px;
             flex-direction: column;
             flex-grow: 1;
-            justify-content: space-between;
         }
 
         .screen.active {
             display: flex;
         }
 
-        /* Grote, duidelijke titels voor optimale leesbaarheid */
         h2 {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            line-height: 1.4;
-            color: #1A252F;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        /* Goed leesbare, grote tekstblokken */
-        p {
-            font-size: 1.05rem;
-            color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.35;
             margin-bottom: 20px;
             text-align: center;
         }
 
-        /* Mooi afgeronde fotocontainers met een zachte schaduw */
+        p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
         .image-container {
             width: 100%;
             text-align: center;
-            margin: 15px 0;
-            border-radius: 14px;
-            overflow: hidden;
-            background-color: #F8F9F9;
-            padding: 8px;
-            border: 2px solid #E5E8E8;
+            margin: 20px 0;
+            border-radius: 16px;
+            background-color: #1E1E1E;
+            padding: 15px;
+            border: 2px solid #333;
         }
 
         .image-container img {
             max-width: 100%;
-            max-height: 180px;
+            max-height: 250px;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 12px;
         }
 
-        /* Lay-out voor twee foto's netjes naast elkaar */
         .images-side-by-side {
             display: flex;
             justify-content: space-between;
-            gap: 12px;
-            margin: 15px 0;
+            gap: 15px;
+            margin: 20px 0;
         }
 
         .images-side-by-side div {
             flex: 1;
-            background-color: #F8F9F9;
-            padding: 10px;
-            border-radius: 14px;
-            border: 2px solid #E5E8E8;
+            background-color: #1E1E1E;
+            padding: 15px;
+            border-radius: 16px;
+            border: 2px solid #333;
             text-align: center;
         }
 
         .images-side-by-side img {
             max-width: 100%;
-            height: 90px;
+            height: 100px;
             object-fit: contain;
         }
 
-        .img-label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-top: 6px;
-            text-transform: uppercase;
-        }
-
-        /* Grote, aantrekkelijke antwoordknoppen (Duolingo-stijl) */
+        /* Grote, duidelijke antwoordknoppen */
         .options-list {
             width: 100%;
-            margin-top: 10px;
+            margin-top: auto;
         }
 
         .option-btn {
             width: 100%;
-            background-color: #F2F4F4;
+            background-color: #252525;
             color: var(--text-main);
-            border: 2px solid #BDC3C7;
-            padding: 16px 20px;
-            border-radius: 16px;
-            margin-bottom: 12px;
+            border: 3px solid #444;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
             text-align: left;
-            font-size: 1.05rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 0 #BDC3C7;
+            box-shadow: 0 6px 0 #111;
+            transition: all 0.1s ease;
         }
 
-        .option-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #BDC3C7;
+        .option-btn:active, .img-option-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #111;
         }
 
-        /* Juist antwoord: knop kleurt groen */
-        .option-btn.correct {
-            background-color: #D4EFDF !important;
+        /* Styling voor de klikbare vlaggenknoppen bij Vraag 3 */
+        .img-option-btn {
+            flex: 1;
+            background-color: #252525;
+            border: 4px solid #444;
+            border-radius: 20px;
+            padding: 20px 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s ease;
+            color: #FFF;
+        }
+
+        .img-option-btn img {
+            height: 100px;
+            max-width: 100%;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .img-label {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        /* Feedback kleuren */
+        .option-btn.correct, .img-option-btn.correct {
+            background-color: #196F3D !important;
             border-color: var(--success-color) !important;
-            color: #196F3D !important;
-            box-shadow: 0 4px 0 var(--success-color) !important;
+            box-shadow: 0 6px 0 #0E4B28 !important;
         }
 
-        /* Fout antwoord: knop kleurt rood met een schudeffect */
-        .option-btn.incorrect {
-            background-color: #FADBD8 !important;
+        .option-btn.incorrect, .img-option-btn.incorrect {
+            background-color: #922B21 !important;
             border-color: var(--error-color) !important;
-            color: #78281F !important;
-            box-shadow: 0 4px 0 var(--error-color) !important;
-            animation: shake 0.3s ease;
+            box-shadow: 0 6px 0 #641E16 !important;
+            animation: shake 0.4s ease;
         }
 
-        /* Grote actieknop voor activering en start */
         .btn-primary {
             background-color: var(--primary-color);
-            color: #1A252F;
-            font-weight: 700;
+            color: #000;
+            font-weight: 900;
             border: none;
-            padding: 18px;
-            border-radius: 16px;
-            font-size: 1.1rem;
+            padding: 22px;
+            border-radius: 20px;
+            font-size: 1.3rem;
             cursor: pointer;
             width: 100%;
-            transition: background-color 0.2s;
-            box-shadow: 0 5px 0 #D4AC0D;
+            box-shadow: 0 6px 0 #B97700;
             text-align: center;
+            margin-top: 20px;
         }
 
         .btn-primary:active {
-            transform: translateY(5px);
-            box-shadow: 0 0 0 #D4AC0D;
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #B97700;
         }
 
-        /* Feedback meldingen */
         .feedback-message {
-            padding: 12px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 15px;
             text-align: center;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
             display: none;
         }
 
         .feedback-message.error {
             display: block;
-            background-color: #FADBD8;
-            color: var(--error-color);
+            background-color: #641E16;
+            color: #FFF;
             border: 2px solid var(--error-color);
         }
 
-        /* GPS laadscherm animatie */
+        /* GPS Spinner */
         .gps-box {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 30px 10px;
+            flex-grow: 1;
         }
 
         .spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #E5E8E8;
-            border-top: 6px solid var(--primary-color);
+            width: 80px;
+            height: 80px;
+            border: 8px solid #333;
+            border-top: 8px solid var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
-        /* Grote, stoere codebox voor het eindscherm */
         .code-box {
-            background-color: #1A252F;
-            border: 3px dashed var(--primary-color);
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: 6px;
+            background-color: #000;
+            border: 4px dashed var(--primary-color);
+            padding: 25px;
+            border-radius: 20px;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 10px;
             color: var(--primary-color);
-            margin: 20px 0;
+            margin: 25px 0;
             text-align: center;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .badge {
-            background-color: #1A252F;
+            background-color: #333;
             color: var(--primary-color);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 900;
             text-transform: uppercase;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 20px auto;
             display: inline-block;
-            letter-spacing: 0.5px;
-        }
-
-        .text-left-aligned {
-            text-align: left !important;
-            font-size: 0.95rem;
         }
 
         @keyframes spin {
@@ -296,15 +290,17 @@
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            20% { transform: translateX(-12px); }
+            40% { transform: translateX(12px); }
+            60% { transform: translateX(-12px); }
+            80% { transform: translateX(12px); }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="header">Guldensporenslag Geogame</div>
+    <div class="header">Guldensporenslag Missie</div>
     <div class="progress-container">
         <div class="progress-fill" id="progressBarFill"></div>
     </div>
@@ -313,139 +309,126 @@
         <div class="gps-box">
             <div class="spinner" id="gps-spinner" style="display:none;"></div>
             <h2>GPS-Check</h2>
-            <p id="gps-text">Welkom! Om deze missie te kunnen starten, moeten we controleren of je dicht genoeg bij de historische locatie bent.</p>
-            <button class="btn-primary" id="btn-allow-gps" onclick="requestLocation()">Controleer mijn locatie</button>
+            <p id="gps-text">Klaar voor de start? We controleren eerst even of je in de buurt bent.</p>
+            <button class="btn-primary" id="btn-allow-gps" onclick="requestLocation()">Controleer Locatie</button>
         </div>
     </div>
 
     <div class="screen" id="screen-welcome">
-        <div>
-            <div style="text-align:center;"><span class="badge">Start</span></div>
-            <h2>Guldensporenslag<br><span style="font-size: 1.1rem; color: var(--primary-dark);">(Slag bij Kortrijk)</span></h2>
-            <div class="image-container">
-                <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c4f5ac2ed7/content/images/2026/03/1-35.webp" alt="Guldensporenslag">
-            </div>
-            <p>De slag was het gevolg van de Vlaamse Opstand. De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.</p>
+        <div style="text-align:center;"><span class="badge">Start</span></div>
+        <h2>Guldensporenslag<br><span style="font-size: 1.3rem; color: var(--primary-color);">(Slag bij Kortrijk)</span></h2>
+        <div class="image-container">
+            <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c4f5ac2ed7/content/images/2026/03/1-35.webp" alt="Guldensporenslag">
         </div>
-        <button class="btn-primary" onclick="nextScreen('q1')">Start de vragen!</button>
+        <p>De slag was het gevolg van de Vlaamse Opstand. De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.</p>
+        <button class="btn-primary" onclick="nextScreen('q1')" style="margin-top: auto;">Start Missie!</button>
     </div>
 
     <div class="screen" id="screen-q1">
-        <div>
-            <div style="text-align:center;"><span class="badge">Vraag 1 van 5</span></div>
-            <h2>Onder welke graaf vond de Guldensporenslag plaats?</h2>
-            <div id="feedback-q1" class="feedback-message error" style="display:none;">Oei, dat is niet juist! Probeer het nog eens.</div>
-            <div class="options-list">
-                <button class="option-btn" onclick="checkAnswer(1, 'Filips de Schone', this)">Filips de Schone</button>
-                <button class="option-btn" onclick="checkAnswer(1, 'Gwijde van Dampierre', this)">Gwijde van Dampierre</button>
-                <button class="option-btn" onclick="checkAnswer(1, 'Robrecht van Bethune', this)">Robrecht van Bethune</button>
-                <button class="option-btn" onclick="checkAnswer(1, 'Lodewijk van Nevers', this)">Lodewijk van Nevers</button>
-            </div>
+        <div style="text-align:center;"><span class="badge">Vraag 1 / 5</span></div>
+        <h2>Onder welke graaf vond de Guldensporenslag plaats?</h2>
+        <div id="feedback-q1" class="feedback-message error" style="display:none;">Oeps, dat is niet juist! Probeer nog eens.</div>
+        
+        <div class="options-list">
+            <button class="option-btn" onclick="checkAnswer(1, 'Filips de Schone', this)">Filips de Schone</button>
+            <button class="option-btn" onclick="checkAnswer(1, 'Gwijde van Dampierre', this)">Gwijde van Dampierre</button>
+            <button class="option-btn" onclick="checkAnswer(1, 'Robrecht van Bethune', this)">Robrecht van Bethune</button>
+            <button class="option-btn" onclick="checkAnswer(1, 'Lodewijk van Nevers', this)">Lodewijk van Nevers</button>
         </div>
     </div>
 
     <div class="screen" id="screen-q2">
-        <div>
-            <div style="text-align:center;"><span class="badge">Vraag 2 van 5</span></div>
-            <h2>Wanneer vond de Guldensporenslag plaats?</h2>
-            <div id="feedback-q2" class="feedback-message error" style="display:none;">Niet juist! Denk goed na over het jaartal.</div>
-            <div class="options-list">
-                <button class="option-btn" onclick="checkAnswer(2, '11 juli 1302', this)">11 juli 1302</button>
-                <button class="option-btn" onclick="checkAnswer(2, '11 juli 1382', this)">11 juli 1382</button>
-                <button class="option-btn" onclick="checkAnswer(2, '13 juli 1302', this)">13 juli 1302</button>
-                <button class="option-btn" onclick="checkAnswer(2, '11 juli 1297', this)">11 juli 1297</button>
-            </div>
+        <div style="text-align:center;"><span class="badge">Vraag 2 / 5</span></div>
+        <h2>Wanneer vond de Guldensporenslag plaats?</h2>
+        <div id="feedback-q2" class="feedback-message error" style="display:none;">Fout! Kijk goed naar de jaartallen.</div>
+        
+        <div class="options-list">
+            <button class="option-btn" onclick="checkAnswer(2, '11 juli 1302', this)">11 juli 1302</button>
+            <button class="option-btn" onclick="checkAnswer(2, '11 juli 1382', this)">11 juli 1382</button>
+            <button class="option-btn" onclick="checkAnswer(2, '13 juli 1302', this)">13 juli 1302</button>
+            <button class="option-btn" onclick="checkAnswer(2, '11 juli 1297', this)">11 juli 1297</button>
         </div>
     </div>
 
     <div class="screen" id="screen-q3">
-        <div>
-            <div style="text-align:center;"><span class="badge">Vraag 3 van 5</span></div>
-            <h2>Tegen welk leger vocht het Vlaamse leger?</h2>
+        <div style="text-align:center;"><span class="badge">Vraag 3 / 5</span></div>
+        <h2>Tegen welk leger vocht het Vlaamse leger?</h2>
+        
+        <div id="feedback-q3" class="feedback-message error" style="display:none;">Fout! Tik op het andere wapenschild.</div>
+        
+        <div style="display: flex; gap: 15px; margin-top: auto; padding-bottom: 20px;">
+            <button class="img-option-btn" onclick="checkAnswer(3, 'Vlaamse leger', this)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" alt="Vlaamse Leger">
+                <div class="img-label" style="color: var(--primary-color);">Vlaamse leger</div>
+            </button>
             
-            <div class="images-side-by-side">
-                <div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" alt="Vlaamse Leger logo">
-                    <div class="img-label" style="color: #D4AC0D;">Vlaamse leger</div>
-                </div>
-                <div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" alt="Franse Leger logo">
-                    <div class="img-label" style="color: #2980B9;">Franse leger</div>
-                </div>
-            </div>
-
-            <div id="feedback-q3" class="feedback-message error" style="display:none;">Kijk goed naar de logo's hierboven! Probeer opnieuw.</div>
-            <div class="options-list">
-                <button class="option-btn" onclick="checkAnswer(3, 'Engelse leger', this)">Engelse leger</button>
-                <button class="option-btn" onclick="checkAnswer(3, 'Duitse leger', this)">Duitse leger</button>
-                <button class="option-btn" onclick="checkAnswer(3, 'Franse leger', this)">Franse leger</button>
-                <button class="option-btn" onclick="checkAnswer(3, 'Spaanse leger', this)">Spaanse leger</button>
-            </div>
+            <button class="img-option-btn" onclick="checkAnswer(3, 'Franse leger', this)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" alt="Franse Leger">
+                <div class="img-label" style="color: #3498DB;">Franse leger</div>
+            </button>
         </div>
     </div>
 
     <div class="screen" id="screen-q4">
-        <div>
-            <div style="text-align:center;"><span class="badge">Vraag 4 van 5</span></div>
-            <h2>Welk objectnummer hoort bij de punt van een goedendag?</h2>
-            <p class="text-left-aligned">De term "goedendag" is een middeleeuws wapen. De verwarring met een "punt maar geen bol" ontstaat doordat dit wapen een zware houten knots is met een metalen piek/punt aan de bovenkant, in plaats van een metalen bol (zoals bij een morgenster of strijdvlegel).</p>
-            
-            <div class="images-side-by-side" style="margin: 10px 0;">
-                <div>
-                    <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png" alt="Strijdvlegel">
-                    <div style="font-size: 0.75rem; color: var(--text-muted);">Strijdvlegel</div>
-                </div>
-                <div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG" alt="Goedendags">
-                    <div style="font-size: 0.75rem; color: var(--text-muted);">Goedendags (Kortrijk 1302)</div>
-                </div>
+        <div style="text-align:center;"><span class="badge">Vraag 4 / 5</span></div>
+        <h2 style="font-size: 1.4rem;">Welk objectnummer hoort bij de punt van een goedendag?</h2>
+        <p style="text-align: left; font-size: 1.05rem;">De term "goedendag" is een middeleeuws wapen. De verwarring ontstaat doordat dit een zware houten knots is met een metalen piek aan de bovenkant, in plaats van een metalen bol (zoals bij een strijdvlegel hieronder).</p>
+        
+        <div class="images-side-by-side" style="margin: 10px 0;">
+            <div>
+                <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png" alt="Strijdvlegel">
+                <div style="font-size: 0.9rem; margin-top:5px;">Strijdvlegel</div>
             </div>
+            <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG" alt="Goedendags">
+                <div style="font-size: 0.9rem; margin-top:5px;">Museum 1302</div>
+            </div>
+        </div>
 
-            <div id="feedback-q4" class="feedback-message error" style="display:none;">Fout! Welk objectnummer zie je bij de scherpe punt?</div>
-            <div class="options-list">
-                <button class="option-btn" onclick="checkAnswer(4, '3', this)">Object 3</button>
-                <button class="option-btn" onclick="checkAnswer(4, '5', this)">Object 5</button>
-                <button class="option-btn" onclick="checkAnswer(4, '8', this)">Object 8</button>
-                <button class="option-btn" onclick="checkAnswer(4, '12', this)">Object 12</button>
-            </div>
+        <div id="feedback-q4" class="feedback-message error" style="display:none;">Fout! Welk nummer is de scherpe punt?</div>
+        
+        <div class="options-list">
+            <button class="option-btn" onclick="checkAnswer(4, '3', this)">Object 3</button>
+            <button class="option-btn" onclick="checkAnswer(4, '5', this)">Object 5</button>
+            <button class="option-btn" onclick="checkAnswer(4, '8', this)">Object 8</button>
+            <button class="option-btn" onclick="checkAnswer(4, '12', this)">Object 12</button>
         </div>
     </div>
 
     <div class="screen" id="screen-q5">
-        <div>
-            <div style="text-align:center;"><span class="badge">Vraag 5 van 5</span></div>
-            <h2>Welk objectnummer hoort bij het Guldenspoor?</h2>
-            <p class="text-left-aligned">De Vlamingen vonden op het slagveld – volgens de versie van Hendrik Conscience – minstens vijfhonderd vergulde sporen, vandaar de naam van de slag. Alleen adellijke ridders konden zich dit veroorloven.</p>
-            
-            <div class="image-container">
-                <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg" alt="Guldenspoor">
-            </div>
+        <div style="text-align:center;"><span class="badge">Vraag 5 / 5</span></div>
+        <h2>Welk objectnummer hoort bij het Guldenspoor?</h2>
+        <p style="text-align: left; font-size: 1.05rem;">De Vlamingen vonden op het slagveld minstens vijfhonderd vergulde sporen. Alleen adellijke ridders konden zich dit veroorloven.</p>
+        
+        <div class="image-container" style="margin: 10px 0;">
+            <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg" alt="Guldenspoor">
+        </div>
 
-            <div id="feedback-q5" class="feedback-message error" style="display:none;">Probeer het nog een keer! Welk nummer wijst naar het spoor?</div>
-            <div class="options-list">
-                <button class="option-btn" onclick="checkAnswer(5, '1', this)">Object 1</button>
-                <button class="option-btn" onclick="checkAnswer(5, '3', this)">Object 3</button>
-                <button class="option-btn" onclick="checkAnswer(5, '5', this)">Object 5</button>
-                <button class="option-btn" onclick="checkAnswer(5, '7', this)">Object 7</button>
-            </div>
+        <div id="feedback-q5" class="feedback-message error" style="display:none;">Fout! Kijk goed naar de afbeelding.</div>
+        
+        <div class="options-list">
+            <button class="option-btn" onclick="checkAnswer(5, '1', this)">Object 1</button>
+            <button class="option-btn" onclick="checkAnswer(5, '3', this)">Object 3</button>
+            <button class="option-btn" onclick="checkAnswer(5, '5', this)">Object 5</button>
+            <button class="option-btn" onclick="checkAnswer(5, '7', this)">Object 7</button>
         </div>
     </div>
 
     <div class="screen" id="screen-end">
-        <div style="text-align: center;">
-            <div style="text-align:center;"><span class="badge" style="background-color: var(--success-color); color: white;">Missie Geslaagd!</span></div>
-            <h2 style="color: #27AE60; font-size: 1.6rem;">Proficiat, je hebt de missie voltooid!</h2>
+        <div style="text-align: center; display: flex; flex-direction: column; height: 100%;">
+            <div style="text-align:center;"><span class="badge" style="background-color: var(--success-color); color: #000;">Missie Geslaagd!</span></div>
+            <h2 style="color: var(--success-color); font-size: 2.2rem; margin-top: 10px;">Proficiat!</h2>
             
-            <p style="margin-top: 15px; font-weight: 600;">Je kan de schatkist om de cache te loggen vinden in het infopunt, hierin ligt het logboek en de code voor RV Vlaanderen.</p>
+            <p style="font-weight: 700; color: #FFF; font-size: 1.2rem; margin-top: 20px;">Je hebt de missie voltooid. Je kan de schatkist om de cache te loggen vinden in het infopunt, hierin ligt het logboek en de code voor RV Vlaanderen.</p>
             
-            <div style="margin-top: 20px; background: #F8F9F9; padding: 15px; border-radius: 16px; border: 2px solid #E5E8E8;">
-                <span style="font-size: 0.95rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; letter-spacing: 1px;">Controlecode (dagcode):</span>
+            <div style="margin-top: auto; background: #1E1E1E; padding: 25px; border-radius: 20px; border: 3px solid #333;">
+                <span style="font-size: 1.2rem; text-transform: uppercase; color: var(--text-muted); font-weight: 900; letter-spacing: 2px;">Controle code:</span>
                 <div class="code-box" id="dailyCodeBox">----</div>
             </div>
             
-            <p style="font-size: 1.1rem; color: #C0392B; margin-top: 20px; font-weight: 800; background-color: #FDEDEC; padding: 12px; border-radius: 12px; border: 1px solid #FADBD8;">
-                ⚠️ Toon dit scherm met de code in het infopunt!
-            </p>
+            <div style="background-color: #3B1C1C; padding: 20px; border-radius: 16px; border: 2px solid #922B21; margin-top: 20px;">
+                <p style="font-size: 1.2rem; color: #FF6B6B; font-weight: 900; margin: 0;">⚠️ Toon dit scherm met de code in het infopunt!</p>
+            </div>
         </div>
     </div>
 </div>
@@ -478,45 +461,40 @@
         
         btn.style.display = 'none';
         spinner.style.display = 'block';
-        text.innerText = "GPS-signaal zoeken en locatie verifiëren...";
+        text.innerText = "GPS-signaal zoeken...";
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    text.innerText = "Locatie succesvol geverifieerd!";
-                    setTimeout(() => { nextScreen('welcome'); }, 1000);
+                    text.innerText = "Locatie gevonden!";
+                    setTimeout(() => { nextScreen('welcome'); }, 800);
                 },
                 (error) => {
-                    // Zorgt ervoor dat kinderen in het veld nooit vastlopen bij slechte GPS
                     text.innerText = "Locatie gecontroleerd! Je mag starten.";
-                    setTimeout(() => { nextScreen('welcome'); }, 1500);
+                    setTimeout(() => { nextScreen('welcome'); }, 1200);
                 },
                 { enableHighAccuracy: true, timeout: 5000 }
             );
         } else {
-            text.innerText = "GPS niet ondersteund, je mag starten.";
-            setTimeout(() => { nextScreen('welcome'); }, 1000);
+            text.innerText = "Klaar voor de start.";
+            setTimeout(() => { nextScreen('welcome'); }, 800);
         }
     }
 
     function nextScreen(screenId) {
-        // Verberg eerst alle schermen om te zorgen dat het NOOIT onder elkaar komt te staan
         document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
         
-        // Toon het gekozen scherm
         const target = document.getElementById('screen-' + screenId);
         if (target) {
             target.style.display = 'flex';
         }
 
-        // Update de gekleurde progressiebalk bovenin
         const progressFill = document.getElementById('progressBarFill');
         const steps = { 'gps': 0, 'welcome': 15, 'q1': 30, 'q2': 45, 'q3': 60, 'q4': 75, 'q5': 90, 'end': 100 };
         if (progressFill && steps[screenId] !== undefined) {
             progressFill.style.width = steps[screenId] + '%';
         }
         
-        // Scroll automatisch naar boven in de app-container
         window.scrollTo(0, 0);
     }
 
@@ -524,7 +502,7 @@
         const feedback = document.getElementById('feedback-q' + questionNum);
         const correctAnswer = correctAnswers[questionNum];
 
-        const siblingButtons = buttonElement.parentElement.querySelectorAll('.option-btn');
+        const siblingButtons = buttonElement.parentElement.querySelectorAll('button');
         siblingButtons.forEach(btn => {
             btn.classList.remove('correct', 'incorrect');
         });
@@ -540,7 +518,7 @@
                     setupDailyCode();
                     nextScreen('end');
                 }
-            }, 600);
+            }, 800);
         } else {
             buttonElement.classList.add('incorrect');
             if (feedback) feedback.style.display = 'block';
