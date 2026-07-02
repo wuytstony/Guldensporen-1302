@@ -5,66 +5,63 @@
 <title>Guldensporenslag Geocache</title>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
-    background: #f5f5f5;
-  }
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
 
-  .page {
-    display: none;
-  }
+.page {
+  display: none;
+}
 
-  .active {
-    display: block;
-  }
+.active {
+  display: block;
+}
 
-  button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 15px;
-    width: 80%;
-    max-width: 500px;
-    font-size: 16px;
-  }
+button {
+  display: block;
+  margin: 10px auto;
+  padding: 12px;
+  width: 80%;
+  max-width: 500px;
+  font-size: 16px;
+}
 
-  img {
-    max-width: 90%;
-    margin: 10px 0;
-  }
-
-  .title {
-    font-size: 26px;
-    font-weight: bold;
-  }
-
-  .text {
-    max-width: 800px;
-    margin: auto;
-  }
-
+img {
+  max-width: 90%;
+  margin: 10px 0;
+}
 </style>
 </head>
 
 <body>
 
-<!-- WELKOM -->
-<div id="page0" class="page active">
-  <div class="title">Guldensporenslag (Slag bij Kortrijk)</div>
+<!-- GPS START -->
+<div id="p0" class="page active">
+  <h1>Guldensporenslag Geocache</h1>
+  <p>Je kan enkel starten in de OLV-kerk.</p>
 
-  <p class="text">
-    De slag was het gevolg van de Vlaamse Opstand. De slag was in militair opzicht opmerkelijk,
-    omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.
+  <button onclick="checkGPS()">Start controle</button>
+  <p id="msg"></p>
+</div>
+
+<!-- WELKOM -->
+<div id="p1" class="page">
+  <h2>Welkom</h2>
+
+  <p>
+  De slag was het gevolg van de Vlaamse Opstand.
+  De slag was in militair opzicht opmerkelijk, omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.
   </p>
 
   <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c5f4ac2ed7/content/images/2026/03/1-35.webp">
 
-  <button onclick="nextPage()">Start missie</button>
+  <button onclick="next()">Start missie</button>
 </div>
 
 <!-- VRAAG 1 -->
-<div id="page1" class="page">
+<div id="p2" class="page">
   <h2>1. Onder welke graaf vond de Guldensporenslag plaats?</h2>
 
   <button onclick="wrong()">Filips de Schone</button>
@@ -74,75 +71,77 @@
 </div>
 
 <!-- VRAAG 2 -->
-<div id="page2" class="page">
+<div id="p3" class="page">
   <h2>2. Wanneer vond de Guldensporenslag plaats?</h2>
 
-  <button onclick="correct()">11 juli 1302</button>
   <button onclick="wrong()">11 juli 1303</button>
+  <button onclick="correct()">11 juli 1302</button>
   <button onclick="wrong()">18 mei 1302</button>
   <button onclick="wrong()">23 augustus 1302</button>
 </div>
 
 <!-- VRAAG 3 -->
-<div id="page3" class="page">
+<div id="p4" class="page">
   <h2>3. Tegen welk leger vocht het Vlaamse leger?</h2>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" width="200">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" width="200">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" width="150">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" width="150">
 
-  <p>Links = Vlaamse context / Rechts = Franse context</p>
+  <p>Links = Vlaams / Rechts = Frans</p>
 
   <button onclick="wrong()">Engels leger</button>
-  <button onclick="wrong()">Duits leger</button>
   <button onclick="correct()">Franse leger</button>
+  <button onclick="wrong()">Duits leger</button>
   <button onclick="wrong()">Bourgondisch leger</button>
 </div>
 
 <!-- VRAAG 4 -->
-<div id="page4" class="page">
+<div id="p5" class="page">
   <h2>4. Wat is het juiste objectnummer bij de punt van een goedendag?</h2>
 
-  <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png">
+  <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png" width="200">
 
-  <p>Bekijk goed het wapen.</p>
-
-  <button onclick="wrong()">Object 1</button>
-  <button onclick="correct()">Object 3</button>
-  <button onclick="wrong()">Object 5</button>
-  <button onclick="wrong()">Object 7</button>
+  <button onclick="wrong()">1</button>
+  <button onclick="correct()">3</button>
+  <button onclick="wrong()">5</button>
+  <button onclick="wrong()">7</button>
 </div>
 
 <!-- VRAAG 5 -->
-<div id="page5" class="page">
+<div id="p6" class="page">
   <h2>5. Welk objectnummer hoort bij het Guldenspoor?</h2>
 
-  <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg">
+  <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg" width="200">
 
-  <button onclick="wrong()">Object 2</button>
-  <button onclick="wrong()">Object 4</button>
-  <button onclick="correct()">Object 6</button>
-  <button onclick="wrong()">Object 9</button>
+  <button onclick="wrong()">2</button>
+  <button onclick="wrong()">4</button>
+  <button onclick="correct()">6</button>
+  <button onclick="wrong()">9</button>
 </div>
 
-<!-- EINDSCHERM -->
-<div id="page6" class="page">
-  <h2>🎉 Proficiat, je hebt de missie voltooid!</h2>
+<!-- EINDE -->
+<div id="p7" class="page">
+  <h2>🎉 Proficiat, missie voltooid!</h2>
 
   <p>
-    Je kan de schatkist om de cache te loggen vinden in het infopunt.
+    Je kan de schatkist vinden in het infopunt.
     Hierin ligt het logboek en de code voor RV Vlaanderen.
   </p>
 
-  <h3>Controlecode (dagcode):</h3>
+  <h3>Controlecode:</h3>
   <p id="code"></p>
 
-  <p><b>Toon dit scherm met de code in het infopunt</b></p>
+  <p><b>Toon dit scherm in het infopunt</b></p>
 </div>
 
 <script>
 
-let page = 0;
+/* GPS */
+const lat = 50.8586;
+const lon = 3.3233;
+const radius = 10;
 
+/* DAGCODES */
 const codes = {
   1:"4817",2:"9023",3:"6631",4:"1184",5:"5502",
   6:"7391",7:"2048",8:"9912",9:"3305",10:"7816",
@@ -153,19 +152,49 @@ const codes = {
   31:"5093"
 };
 
+let page = 0;
+
 function show(p){
-  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-  document.getElementById("page"+p).classList.add("active");
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.getElementById("p"+p).classList.add('active');
 }
 
-function nextPage(){
+/* GPS CHECK */
+function checkGPS(){
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const d = distance(pos.coords.latitude,pos.coords.longitude,lat,lon);
+
+    if(d <= radius){
+      show(1);
+    } else {
+      document.getElementById("msg").innerText =
+        "Niet in de kerk ("+Math.round(d)+"m)";
+    }
+  });
+}
+
+function distance(a,b,c,d){
+  const R=6371e3;
+  const φ1=a*Math.PI/180;
+  const φ2=c*Math.PI/180;
+  const dφ=(c-a)*Math.PI/180;
+  const dλ=(d-b)*Math.PI/180;
+
+  const x=Math.sin(dφ/2)**2+
+          Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
+
+  return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+/* NAVIGATIE */
+function next(){
   page++;
-  show(page);
+  show(page+1);
 }
 
 function correct(){
   page++;
-  show(page);
+  show(page+1);
 
   if(page === 6){
     const day = new Date().getDate();
@@ -174,7 +203,7 @@ function correct(){
 }
 
 function wrong(){
-  alert("Fout antwoord, probeer opnieuw!");
+  alert("Fout antwoord, probeer opnieuw");
 }
 
 </script>
