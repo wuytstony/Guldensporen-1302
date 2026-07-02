@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -71,7 +72,6 @@ img{
 
 .row img{
   width:50%;
-  border-radius:10px;
 }
 
 .code{
@@ -81,17 +81,21 @@ img{
   margin-top:20px;
 }
 </style>
+
 </head>
 
 <body>
 
-<!-- GPS -->
+<!-- GPS START -->
+
 <div class="page active" id="gps">
   <h2>📍 GPS check</h2>
-  <button class="primary" onclick="go('welcome')">Start missie</button>
+  <p>Ga naar de startlocatie om te beginnen</p>
+  <button class="primary" onclick="checkGPS()">Start missie</button>
 </div>
 
 <!-- WELKOM -->
+
 <div class="page" id="welcome">
   <h2>Guldensporenslag (Slag bij Kortrijk)</h2>
 
@@ -100,28 +104,30 @@ img{
   Ambachtslieden versloegen een ridderleger.
   </p>
 
-  <img src="https://belgiumbattlefield.be/sites/default/files/styles/single_item/public/2021-10/Guldensporenslag_Nicaise_de_Keyser02.jpg?itok=BuRCDz-O">
+  <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c4f5ac2ed7/content/images/2026/03/1-35.webp">
 
-  <button class="primary" onclick="go('q1')">Start</button>
+<button class="primary" onclick="go('q1')">Start</button>
+
 </div>
 
 <!-- Q1 -->
+
 <div class="page" id="q1">
   <h2>Vraag 1</h2>
   <div class="sub">Onder welke graaf vond de Guldensporenslag plaats?</div>
-
   <div class="grid" id="q1box"></div>
 </div>
 
 <!-- Q2 -->
+
 <div class="page" id="q2">
   <h2>Vraag 2</h2>
   <div class="sub">Wanneer vond de Guldensporenslag plaats?</div>
-
   <div class="grid" id="q2box"></div>
 </div>
 
 <!-- Q3 -->
+
 <div class="page" id="q3">
   <h2>Vraag 3</h2>
   <div class="sub">Vlaamse leger (links) tegen welk leger?</div>
@@ -135,52 +141,53 @@ img{
 </div>
 
 <!-- Q4 -->
+
 <div class="page" id="q4">
   <h2>Vraag 4</h2>
 
   <div class="sub">
-  De term "goedendag" is een middeleeuws wapen. De verwarring met een "punt maar geen bol" ontstaat doordat dit wapen een zware houten knots is met een metalen piek/punt aan de bovenkant, in plaats van een metalen bol (zoals bij een morgenster of strijdvlegel)
+  De term "goedendag" is een middeleeuws wapen. Een zware houten knots met een metalen punt.
   </div>
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG">
 
-  <div class="sub">Welk objectnummer vind je terug bij de punt van een goedendag?</div>
-
+  <div class="sub">Welk objectnummer vind je bij de punt?</div>
   <div class="grid" id="q4box"></div>
 </div>
 
 <!-- Q5 -->
+
 <div class="page" id="q5">
   <h2>Vraag 5</h2>
 
   <div class="sub">
-  De Vlamingen vonden op het slagveld – volgens de versie van Hendrik Conscience (minstens vijfhonderd vergulde sporen, vandaar de (moderne) naam van de slag. Alleen adellijke ridders konden zich de aankoop van vergulde sporen veroorloven.
+  Volgens Hendrik Conscience werden honderden vergulde sporen gevonden.
   </div>
 
   <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg">
 
-  <div class="sub">Welk objectnummer vind je terug bij het Guldenspoor?</div>
-
+  <div class="sub">Welk objectnummer hoort bij het Guldenspoor?</div>
   <div class="grid" id="q5box"></div>
 </div>
 
-<!-- END -->
+<!-- EINDE -->
+
 <div class="page" id="end">
   <h2>🎉 Proficiat!</h2>
 
-  <p>
-  Je hebt de missie voltooid!<br>
-  Je kan de schatkist om de cache te loggen vinden in het infopunt.<br>
-  Hierin ligt het logboek en de code voor RV Vlaanderen.
-  </p>
-
+  <p>Toon deze code in het infopunt:</p>
   <div class="code" id="code"></div>
-
-  <p>toon dit scherm met de code in het infopunt</p>
 </div>
 
 <script>
 
+// STARTLOCATIES
+const locations = [
+  {lat:50.833826912573784, lon:3.322302637670119},
+  {lat:50.82913064521781, lon:3.2670591130603537}
+];
+
+// DAGCODES
 const codes = {
 1:"4817",2:"9023",3:"6631",4:"1184",5:"5502",
 6:"7391",7:"2048",8:"9912",9:"3305",10:"7816",
@@ -190,6 +197,44 @@ const codes = {
 26:"4530",27:"9921",28:"3674",29:"7125",30:"8806",
 31:"5093"
 };
+
+function checkGPS(){
+  navigator.geolocation.getCurrentPosition(pos=>{
+    let ok = false;
+
+    locations.forEach(loc=>{
+      const d = distance(
+        pos.coords.latitude,
+        pos.coords.longitude,
+        loc.lat,
+        loc.lon
+      );
+      if(d < 50) ok = true;
+    });
+
+    if(ok){
+      go('welcome');
+    } else {
+      alert("Je bent niet op de juiste startlocatie");
+    }
+  },
+  ()=>alert("GPS niet beschikbaar"));
+}
+
+function distance(lat1, lon1, lat2, lon2){
+  const R = 6371e3;
+  const φ1 = lat1*Math.PI/180;
+  const φ2 = lat2*Math.PI/180;
+  const Δφ = (lat2-lat1)*Math.PI/180;
+  const Δλ = (lon2-lon1)*Math.PI/180;
+
+  const a =
+    Math.sin(Δφ/2)*Math.sin(Δφ/2) +
+    Math.cos(φ1)*Math.cos(φ2) *
+    Math.sin(Δλ/2)*Math.sin(Δλ/2);
+
+  return 2*R*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
 
 function go(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -201,7 +246,7 @@ function go(page){
   }
 }
 
-/* QUESTIONS */
+// VRAGEN
 function build(id, arr, next){
   const box = document.getElementById(id);
   box.innerHTML = "";
@@ -223,9 +268,9 @@ function build(id, arr, next){
 }
 
 build("q1box", [
+  ["Gwijde van Dampierre",true],
   ["Filips de Schone",false],
   ["Robrecht van Bethune",false],
-  ["Gwijde van Dampierre",true],
   ["Lodewijk IX",false]
 ],"q2");
 
@@ -237,22 +282,22 @@ build("q2box", [
 ],"q3");
 
 build("q3box", [
+  ["Franse leger",true],
   ["Engelse leger",false],
   ["Duitse leger",false],
-  ["Franse leger",true],
   ["Spaanse leger",false]
 ],"q4");
 
 build("q4box", [
+  ["8",true],
   ["3",false],
   ["5",false],
-  ["8",true],
   ["12",false]
 ],"q5");
 
 build("q5box", [
-  ["1",false],
   ["3",true],
+  ["1",false],
   ["5",false],
   ["7",false]
 ],"end");
