@@ -2,171 +2,180 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guldensporenslag Geocache Quiz</title>
+<title>Guldensporenslag Geocache</title>
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: white;
-}
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: #f5f5f5;
+  }
 
-.container {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-}
+  .page {
+    display: none;
+  }
 
-.box {
-  width: 100%;
-  max-width: 700px;
-  background: #1c1c1c;
-  display: flex;
-  flex-direction: column;
-}
+  .active {
+    display: block;
+  }
 
-.header {
-  text-align: center;
-  padding: 15px;
-  font-size: 22px;
-  background: #000;
-}
+  button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 15px;
+    width: 80%;
+    max-width: 500px;
+    font-size: 16px;
+  }
 
-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
+  img {
+    max-width: 90%;
+    margin: 10px 0;
+  }
 
-.content {
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+  .title {
+    font-size: 26px;
+    font-weight: bold;
+  }
 
-.question {
-  font-size: 20px;
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
+  .text {
+    max-width: 800px;
+    margin: auto;
+  }
 
-.btn {
-  background: #333;
-  border: none;
-  color: white;
-  padding: 14px;
-  margin: 8px 0;
-  font-size: 18px;
-  border-radius: 10px;
-  width: 100%;
-}
-
-.btn:active {
-  background: #555;
-}
-
-.feedback {
-  margin-top: 10px;
-  font-weight: bold;
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <div class="box">
+<!-- WELKOM -->
+<div id="page0" class="page active">
+  <div class="title">Guldensporenslag (Slag bij Kortrijk)</div>
 
-    <div class="header">
-      🛡️ Guldensporenslag Geocache Quiz
-    </div>
+  <p class="text">
+    De slag was het gevolg van de Vlaamse Opstand. De slag was in militair opzicht opmerkelijk,
+    omdat een leger bestaande uit ambachtslieden een ridderleger versloeg.
+  </p>
 
-    <img id="img" src="" alt="">
+  <img src="https://storage.ghost.io/c/f4/16/f4162a4d-727a-468d-b8b7-70c5f4ac2ed7/content/images/2026/03/1-35.webp">
 
-    <div class="content">
-      <div id="quiz"></div>
-    </div>
+  <button onclick="nextPage()">Start missie</button>
+</div>
 
-  </div>
+<!-- VRAAG 1 -->
+<div id="page1" class="page">
+  <h2>1. Onder welke graaf vond de Guldensporenslag plaats?</h2>
+
+  <button onclick="wrong()">Filips de Schone</button>
+  <button onclick="wrong()">Robrecht van Bethune</button>
+  <button onclick="correct()">Gwijde van Dampierre</button>
+  <button onclick="wrong()">Lodewijk IX</button>
+</div>
+
+<!-- VRAAG 2 -->
+<div id="page2" class="page">
+  <h2>2. Wanneer vond de Guldensporenslag plaats?</h2>
+
+  <button onclick="correct()">11 juli 1302</button>
+  <button onclick="wrong()">11 juli 1303</button>
+  <button onclick="wrong()">18 mei 1302</button>
+  <button onclick="wrong()">23 augustus 1302</button>
+</div>
+
+<!-- VRAAG 3 -->
+<div id="page3" class="page">
+  <h2>3. Tegen welk leger vocht het Vlaamse leger?</h2>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png" width="200">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Blason_Nord-Pas-De-Calais.svg/1280px-Blason_Nord-Pas-De-Calais.svg.png" width="200">
+
+  <p>Links = Vlaamse context / Rechts = Franse context</p>
+
+  <button onclick="wrong()">Engels leger</button>
+  <button onclick="wrong()">Duits leger</button>
+  <button onclick="correct()">Franse leger</button>
+  <button onclick="wrong()">Bourgondisch leger</button>
+</div>
+
+<!-- VRAAG 4 -->
+<div id="page4" class="page">
+  <h2>4. Wat is het juiste objectnummer bij de punt van een goedendag?</h2>
+
+  <img src="https://www.vestingmuseummaastricht.nl/images/qr-code-afbeeldingen/Strijdvlegel.png">
+
+  <p>Bekijk goed het wapen.</p>
+
+  <button onclick="wrong()">Object 1</button>
+  <button onclick="correct()">Object 3</button>
+  <button onclick="wrong()">Object 5</button>
+  <button onclick="wrong()">Object 7</button>
+</div>
+
+<!-- VRAAG 5 -->
+<div id="page5" class="page">
+  <h2>5. Welk objectnummer hoort bij het Guldenspoor?</h2>
+
+  <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg">
+
+  <button onclick="wrong()">Object 2</button>
+  <button onclick="wrong()">Object 4</button>
+  <button onclick="correct()">Object 6</button>
+  <button onclick="wrong()">Object 9</button>
+</div>
+
+<!-- EINDSCHERM -->
+<div id="page6" class="page">
+  <h2>🎉 Proficiat, je hebt de missie voltooid!</h2>
+
+  <p>
+    Je kan de schatkist om de cache te loggen vinden in het infopunt.
+    Hierin ligt het logboek en de code voor RV Vlaanderen.
+  </p>
+
+  <h3>Controlecode (dagcode):</h3>
+  <p id="code"></p>
+
+  <p><b>Toon dit scherm met de code in het infopunt</b></p>
 </div>
 
 <script>
 
-const vragen = [
-  {
-    vraag: "In welk jaar vond de Guldensporenslag plaats?",
-    opties: ["1202", "1302", "1402", "1502"],
-    antwoord: 1,
-    img: "https://www.vilters-vanhemel.be/images/Guldensporenslag_Lands_Glorie.jpg"
-  },
-  {
-    vraag: "Wie won de Guldensporenslag?",
-    opties: ["Fransen", "Romeinen", "Vlamingen", "Engelsen"],
-    antwoord: 2,
-    img: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Flag_of_Flanders.svg"
-  },
-  {
-    vraag: "Wat is een typische geocache?",
-    opties: ["Schatkist", "Auto", "Televisie", "Fiets"],
-    antwoord: 0,
-    img: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Geocaching_container.jpg"
-  },
-  {
-    vraag: "Wat is het juiste eindpunt van deze tocht?",
-    opties: ["Kerk", "Bos", "Infopunt Kortrijk", "Station"],
-    antwoord: 2,
-    img: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Kortrijk_Belfort.jpg"
-  }
-];
+let page = 0;
 
-let huidige = 0;
+const codes = {
+  1:"4817",2:"9023",3:"6631",4:"1184",5:"5502",
+  6:"7391",7:"2048",8:"9912",9:"3305",10:"7816",
+  11:"4129",12:"8730",13:"2951",14:"6402",15:"5189",
+  16:"9031",17:"7740",18:"1106",19:"5628",20:"3381",
+  21:"9845",22:"2719",23:"6603",24:"1457",25:"8092",
+  26:"4530",27:"9921",28:"3674",29:"7125",30:"8806",
+  31:"5093"
+};
 
-function toonVraag() {
-  const q = vragen[huidige];
-
-  document.getElementById("img").src = q.img;
-
-  let html = `
-    <div class="question">${q.vraag}</div>
-  `;
-
-  q.opties.forEach((optie, index) => {
-    html += `<button class="btn" onclick="check(${index})">${optie}</button>`;
-  });
-
-  html += `<div class="feedback" id="feedback"></div>`;
-
-  document.getElementById("quiz").innerHTML = html;
+function show(p){
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById("page"+p).classList.add("active");
 }
 
-function check(gekozen) {
-  if (gekozen === vragen[huidige].antwoord) {
-    huidige++;
-
-    if (huidige < vragen.length) {
-      toonVraag();
-    } else {
-      document.getElementById("img").style.display = "none";
-      document.getElementById("quiz").innerHTML = `
-        <h2>🎉 Proficiat!</h2>
-        <p>Je hebt de geocache voltooid.</p>
-        <p><strong>🔐 Schatkist gevonden in het infopunt</strong></p>
-        <p><strong>Code: 1234</strong></p>
-      `;
-    }
-  } else {
-    document.getElementById("feedback").innerText = "❌ Fout antwoord, probeer opnieuw";
-  }
+function nextPage(){
+  page++;
+  show(page);
 }
 
-toonVraag();
+function correct(){
+  page++;
+  show(page);
+
+  if(page === 6){
+    const day = new Date().getDate();
+    document.getElementById("code").innerText = codes[day];
+  }
+}
+
+function wrong(){
+  alert("Fout antwoord, probeer opnieuw!");
+}
 
 </script>
 
