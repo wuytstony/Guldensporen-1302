@@ -13,6 +13,7 @@ body {
   background: #f4f4f4;
 }
 
+/* PAGINA */
 .page {
   display: none;
   padding: 20px;
@@ -22,13 +23,19 @@ body {
   display: block;
 }
 
+/* GROTE TITELS */
+h2 { font-size: 28px; }
+h3 { font-size: 24px; }
+p  { font-size: 20px; }
+
+/* KNOPPEN FULL SCREEN */
 button {
-  padding: 12px;
-  margin: 8px 0;
-  width: 90%;
-  font-size: 16px;
+  padding: 18px;
+  margin: 10px 0;
+  width: 100%;
+  font-size: 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #eee;
 }
 
@@ -47,10 +54,18 @@ button.wrong {
   color: white;
 }
 
+/* AFBEELDINGEN */
 img {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   margin: 10px 0;
+}
+
+/* FEEDBACK */
+#feedback {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 15px;
 }
 </style>
 </head>
@@ -75,7 +90,7 @@ img {
   <button class="primary" onclick="go('q1')">Start quiz</button>
 </div>
 
-<!-- VRAAG 1 -->
+<!-- VRAGEN (feedback toegevoegd) -->
 <div class="page" id="q1">
   <h3>Vraag 1</h3>
   <p>Onder welke graaf vond de Guldensporenslag plaats?</p>
@@ -84,9 +99,10 @@ img {
   <button onclick="check(this,true)">Graaf van Artesië</button>
   <button onclick="check(this,false)">Graaf van Bourgondië</button>
   <button onclick="check(this,false)">Graaf van Henegouwen</button>
+
+  <div id="feedback"></div>
 </div>
 
-<!-- VRAAG 2 -->
 <div class="page" id="q2">
   <h3>Vraag 2</h3>
   <p>Wanneer vond de Guldensporenslag plaats?</p>
@@ -95,9 +111,10 @@ img {
   <button onclick="check(this,true)">1302</button>
   <button onclick="check(this,false)">1402</button>
   <button onclick="check(this,false)">1502</button>
+
+  <div id="feedback"></div>
 </div>
 
-<!-- VRAAG 3 -->
 <div class="page" id="q3">
   <h3>Vraag 3</h3>
 
@@ -109,16 +126,14 @@ img {
   <button onclick="check(this,false)">Engelse leger</button>
   <button onclick="check(this,false)">Spaanse leger</button>
   <button onclick="check(this,false)">Duitse leger</button>
+
+  <div id="feedback"></div>
 </div>
 
-<!-- VRAAG 4 -->
 <div class="page" id="q4">
   <h3>Vraag 4</h3>
 
-  <p>
-  De term "goedendag" is een middeleeuws wapen.
-  Het is een zware houten knots met een metalen punt.
-  </p>
+  <p>De term "goedendag" is een middeleeuws wapen.</p>
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG">
 
@@ -128,15 +143,12 @@ img {
   <button onclick="check(this,false)">1001</button>
   <button onclick="check(this,false)">2002</button>
   <button onclick="check(this,false)">9999</button>
+
+  <div id="feedback"></div>
 </div>
 
-<!-- VRAAG 5 -->
 <div class="page" id="q5">
   <h3>Vraag 5</h3>
-
-  <p>
-  Volgens Hendrik Conscience werden vergulde sporen gevonden.
-  </p>
 
   <p>Welk objectnummer hoort bij het Guldenspoor?</p>
 
@@ -144,6 +156,8 @@ img {
   <button onclick="finish(this,false)">500</button>
   <button onclick="finish(this,false)">700</button>
   <button onclick="finish(this,false)">1000</button>
+
+  <div id="feedback"></div>
 </div>
 
 <!-- EINDE -->
@@ -157,11 +171,11 @@ img {
 <script>
 let current = 1;
 
-// GPS check
+// GPS enkel bij start
 function checkGPS() {
   const targetLat = 50.8586;
   const targetLng = 3.3233;
-  const maxDistance = 100; // meter
+  const maxDistance = 100;
 
   navigator.geolocation.getCurrentPosition(pos => {
     let d = getDistance(
@@ -176,7 +190,7 @@ function checkGPS() {
       setTimeout(() => go('welcome'), 1000);
     } else {
       document.getElementById("gpsStatus").innerHTML =
-        "❌ Je bent niet op de juiste locatie (" + Math.round(d) + "m)";
+        "❌ Niet op juiste locatie (" + Math.round(d) + "m)";
     }
   },
   () => {
@@ -184,7 +198,7 @@ function checkGPS() {
   });
 }
 
-// afstand berekenen
+// afstand
 function getDistance(lat1, lon1, lat2, lon2) {
   let R = 6371e3;
   let φ1 = lat1 * Math.PI/180;
@@ -192,40 +206,48 @@ function getDistance(lat1, lon1, lat2, lon2) {
   let Δφ = (lat2-lat1) * Math.PI/180;
   let Δλ = (lon2-lon1) * Math.PI/180;
 
-  let a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-          Math.cos(φ1) * Math.cos(φ2) *
-          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  let a = Math.sin(Δφ/2)**2 +
+          Math.cos(φ1)*Math.cos(φ2) *
+          Math.sin(Δλ/2)**2;
 
-  let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
+  return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
 // navigatie
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  document.querySelectorAll('#feedback').forEach(f => f.innerHTML = "");
 }
 
-// antwoord check
+// check + feedback
 function check(btn, correct) {
+  let feedback = btn.parentElement.querySelector("#feedback");
+
   if (correct) {
     btn.classList.add("correct");
+    feedback.innerHTML = "✅ Juist!";
     setTimeout(() => {
       current++;
       go("q" + current);
-    }, 800);
+    }, 1200);
   } else {
     btn.classList.add("wrong");
+    feedback.innerHTML = "❌ Fout, probeer opnieuw!";
   }
 }
 
 // laatste vraag
 function finish(btn, correct) {
+  let feedback = btn.parentElement.querySelector("#feedback");
+
   if (correct) {
     btn.classList.add("correct");
-    setTimeout(() => go("end"), 800);
+    feedback.innerHTML = "✅ Juist!";
+    setTimeout(() => go("end"), 1200);
   } else {
     btn.classList.add("wrong");
+    feedback.innerHTML = "❌ Fout, probeer opnieuw!";
   }
 }
 </script>
