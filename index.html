@@ -6,37 +6,51 @@
 <title>Guldensporenslag Quiz</title>
 
 <style>
-body {
-  font-family: Arial;
-  text-align: center;
+html, body {
+  height: 100%;
   margin: 0;
+  font-family: Arial, sans-serif;
   background: #f4f4f4;
 }
 
-/* PAGINA */
+/* FULLSCREEN APP-LAYOUT */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 .page {
   display: none;
+  min-height: 100vh;
   padding: 20px;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-.active {
-  display: block;
+.page.active {
+  display: flex;
 }
 
-/* GROTE TITELS */
-h2 { font-size: 28px; }
+/* TEKST GROTER */
+h2 { font-size: 30px; margin: 10px 0; }
 h3 { font-size: 24px; }
 p  { font-size: 20px; }
 
-/* KNOPPEN FULL SCREEN */
+/* FULLSCREEN KNOPPEN */
 button {
-  padding: 18px;
+  padding: 22px;
   margin: 10px 0;
   width: 100%;
-  font-size: 20px;
+  font-size: 22px;
   border: none;
-  border-radius: 10px;
+  border-radius: 14px;
   background: #eee;
+}
+
+button.primary {
+  background: #2196F3;
+  color: white;
 }
 
 button.correct {
@@ -49,20 +63,16 @@ button.wrong {
   color: white;
 }
 
-.primary {
-  background: #2196F3;
-  color: white;
-}
-
 /* AFBEELDINGEN */
 img {
   width: 100%;
   max-width: 500px;
-  margin: 10px 0;
+  margin: 10px auto;
+  border-radius: 10px;
 }
 
 /* FEEDBACK */
-#feedback {
+.feedback {
   font-size: 22px;
   font-weight: bold;
   margin-top: 15px;
@@ -75,7 +85,8 @@ img {
 <!-- START -->
 <div class="page active" id="start">
   <h2>📍 Start GPS controle</h2>
-  <p>Je moet op de juiste locatie staan om te starten.</p>
+  <p>Je moet op een startlocatie staan om te beginnen.</p>
+
   <button class="primary" onclick="checkGPS()">Controleer locatie</button>
   <p id="gpsStatus"></p>
 </div>
@@ -90,7 +101,7 @@ img {
   <button class="primary" onclick="go('q1')">Start quiz</button>
 </div>
 
-<!-- VRAGEN (feedback toegevoegd) -->
+<!-- VRAGEN -->
 <div class="page" id="q1">
   <h3>Vraag 1</h3>
   <p>Onder welke graaf vond de Guldensporenslag plaats?</p>
@@ -100,7 +111,7 @@ img {
   <button onclick="check(this,false)">Graaf van Bourgondië</button>
   <button onclick="check(this,false)">Graaf van Henegouwen</button>
 
-  <div id="feedback"></div>
+  <div class="feedback"></div>
 </div>
 
 <div class="page" id="q2">
@@ -112,7 +123,7 @@ img {
   <button onclick="check(this,false)">1402</button>
   <button onclick="check(this,false)">1502</button>
 
-  <div id="feedback"></div>
+  <div class="feedback"></div>
 </div>
 
 <div class="page" id="q3">
@@ -120,31 +131,29 @@ img {
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Battle_of_the_Golden_Spurs.jpg/640px-Battle_of_the_Golden_Spurs.jpg">
 
-  <p>Vlaamse leger (gele leger) tegen...?</p>
+  <p>Vlaamse leger tegen...?</p>
 
   <button onclick="check(this,true)">Franse leger</button>
   <button onclick="check(this,false)">Engelse leger</button>
   <button onclick="check(this,false)">Spaanse leger</button>
   <button onclick="check(this,false)">Duitse leger</button>
 
-  <div id="feedback"></div>
+  <div class="feedback"></div>
 </div>
 
 <div class="page" id="q4">
   <h3>Vraag 4</h3>
 
-  <p>De term "goedendag" is een middeleeuws wapen.</p>
+  <p>Welk objectnummer hoort bij de goedendag?</p>
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG">
-
-  <p>Welk objectnummer vind je bij de punt?</p>
 
   <button onclick="check(this,true)">1302</button>
   <button onclick="check(this,false)">1001</button>
   <button onclick="check(this,false)">2002</button>
   <button onclick="check(this,false)">9999</button>
 
-  <div id="feedback"></div>
+  <div class="feedback"></div>
 </div>
 
 <div class="page" id="q5">
@@ -157,7 +166,7 @@ img {
   <button onclick="finish(this,false)">700</button>
   <button onclick="finish(this,false)">1000</button>
 
-  <div id="feedback"></div>
+  <div class="feedback"></div>
 </div>
 
 <!-- EINDE -->
@@ -171,34 +180,67 @@ img {
 <script>
 let current = 1;
 
-// GPS enkel bij start
+/* GPS LOCK (2 LOCATIES + STABILITEIT) */
 function checkGPS() {
-  const targetLat = 50.8586;
-  const targetLng = 3.3233;
-  const maxDistance = 100;
+  const locations = [
+    { name: "Testlocatie Harelbeke", lat: 50.834078, lng: 3.322215 },
+    { name: "Onze-Lieve-Vrouwekerk Kortrijk", lat: 50.82888, lng: 3.26455 }
+  ];
 
-  navigator.geolocation.getCurrentPosition(pos => {
-    let d = getDistance(
-      pos.coords.latitude,
-      pos.coords.longitude,
-      targetLat,
-      targetLng
-    );
+  const maxDistance = 80;
+  let samples = [];
 
-    if (d < maxDistance) {
-      document.getElementById("gpsStatus").innerHTML = "✅ Correcte locatie!";
-      setTimeout(() => go('welcome'), 1000);
-    } else {
-      document.getElementById("gpsStatus").innerHTML =
-        "❌ Niet op juiste locatie (" + Math.round(d) + "m)";
-    }
-  },
-  () => {
-    document.getElementById("gpsStatus").innerHTML = "⚠️ GPS niet toegestaan";
-  });
+  function sample(i) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      samples.push(pos);
+
+      if (samples.length < 3) {
+        setTimeout(() => sample(i + 1), 400);
+        return;
+      }
+
+      let ok = false;
+      let found = "";
+
+      samples.forEach(p => {
+        locations.forEach(loc => {
+          let d = getDistance(
+            p.coords.latitude,
+            p.coords.longitude,
+            loc.lat,
+            loc.lng
+          );
+
+          if (d < maxDistance && p.coords.accuracy < 30) {
+            ok = true;
+            found = loc.name;
+          }
+        });
+      });
+
+      if (ok) {
+        document.getElementById("gpsStatus").innerHTML =
+          "✅ Start bevestigd: " + found;
+
+        setTimeout(() => go('welcome'), 1200);
+      } else {
+        document.getElementById("gpsStatus").innerHTML =
+          "❌ Geen geldige startlocatie";
+      }
+
+    }, () => {
+      document.getElementById("gpsStatus").innerHTML = "⚠️ GPS geweigerd";
+    }, {
+      enableHighAccuracy: true,
+      timeout: 8000,
+      maximumAge: 0
+    });
+  }
+
+  sample(0);
 }
 
-// afstand
+/* AFSTAND */
 function getDistance(lat1, lon1, lat2, lon2) {
   let R = 6371e3;
   let φ1 = lat1 * Math.PI/180;
@@ -213,41 +255,42 @@ function getDistance(lat1, lon1, lat2, lon2) {
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-// navigatie
+/* NAVIGATIE */
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('#feedback').forEach(f => f.innerHTML = "");
+
+  document.querySelectorAll('.feedback').forEach(f => f.innerHTML = "");
 }
 
-// check + feedback
+/* CHECK ANTWOORD */
 function check(btn, correct) {
-  let feedback = btn.parentElement.querySelector("#feedback");
+  let fb = btn.parentElement.querySelector(".feedback");
 
   if (correct) {
     btn.classList.add("correct");
-    feedback.innerHTML = "✅ Juist!";
+    fb.innerHTML = "✅ Juist!";
     setTimeout(() => {
       current++;
       go("q" + current);
     }, 1200);
   } else {
     btn.classList.add("wrong");
-    feedback.innerHTML = "❌ Fout, probeer opnieuw!";
+    fb.innerHTML = "❌ Fout, probeer opnieuw!";
   }
 }
 
-// laatste vraag
+/* EINDE */
 function finish(btn, correct) {
-  let feedback = btn.parentElement.querySelector("#feedback");
+  let fb = btn.parentElement.querySelector(".feedback");
 
   if (correct) {
     btn.classList.add("correct");
-    feedback.innerHTML = "✅ Juist!";
+    fb.innerHTML = "✅ Juist!";
     setTimeout(() => go("end"), 1200);
   } else {
     btn.classList.add("wrong");
-    feedback.innerHTML = "❌ Fout, probeer opnieuw!";
+    fb.innerHTML = "❌ Fout, probeer opnieuw!";
   }
 }
 </script>
