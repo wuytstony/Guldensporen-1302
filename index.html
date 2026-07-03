@@ -31,12 +31,10 @@ body {
   display: flex;
 }
 
-/* TEKST */
 h2 { font-size: 30px; }
 h3 { font-size: 24px; }
 p  { font-size: 20px; }
 
-/* KNOPPEN */
 button {
   padding: 22px;
   margin: 10px 0;
@@ -62,7 +60,6 @@ button.wrong {
   color: white;
 }
 
-/* AFBEELDINGEN */
 img {
   width: 100%;
   max-width: 500px;
@@ -70,7 +67,6 @@ img {
   border-radius: 10px;
 }
 
-/* FEEDBACK */
 .feedback {
   font-size: 22px;
   font-weight: bold;
@@ -85,7 +81,6 @@ img {
 <div class="page active" id="start">
   <h2>📍 Start GPS controle</h2>
   <p>Je moet op een startlocatie staan om te beginnen.</p>
-
   <button class="primary" onclick="checkGPS()">Controleer locatie</button>
   <p id="gpsStatus"></p>
 </div>
@@ -100,69 +95,81 @@ img {
   <button class="primary" onclick="go('q1')">Start quiz</button>
 </div>
 
-<!-- VRAGEN -->
+<!-- VRAAG 1 -->
 <div class="page" id="q1">
   <h3>Vraag 1</h3>
-  <p>Onder welke graaf vond de Guldensporenslag plaats?</p>
+  <p>Wie was graaf van Vlaanderen tijdens de Guldensporenslag?</p>
 
-  <button onclick="check(this,false)">Graaf van Vlaanderen</button>
-  <button onclick="check(this,true)">Graaf van Artesië</button>
-  <button onclick="check(this,false)">Graaf van Bourgondië</button>
-  <button onclick="check(this,false)">Graaf van Henegouwen</button>
+  <img src="https://assets.lastdodo.com/image/ld_large/plain/assets/catalog/assets/2014/2/21/0/8/1/pdf_0815c746-9ad2-11e3-99ed-f56e5834c116.jpg">
+
+  <button onclick="check(this,true)">Gwijde van Dampierre</button>
+  <button onclick="check(this,false)">Robrecht van Artesië</button>
+  <button onclick="check(this,false)">Filips de Schone</button>
+  <button onclick="check(this,false)">Jan zonder Vrees</button>
 
   <div class="feedback"></div>
 </div>
 
+<!-- VRAAG 2 -->
 <div class="page" id="q2">
   <h3>Vraag 2</h3>
   <p>Wanneer vond de Guldensporenslag plaats?</p>
 
-  <button onclick="check(this,false)">1202</button>
-  <button onclick="check(this,true)">1302</button>
-  <button onclick="check(this,false)">1402</button>
-  <button onclick="check(this,false)">1502</button>
+  <button onclick="check(this,false)">1300</button>
+  <button onclick="check(this,false)">1301</button>
+  <button onclick="check(this,true)">11 juli 1302</button>
+  <button onclick="check(this,false)">1305</button>
 
   <div class="feedback"></div>
 </div>
 
+<!-- VRAAG 3 -->
 <div class="page" id="q3">
   <h3>Vraag 3</h3>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Battle_of_the_Golden_Spurs.jpg/640px-Battle_of_the_Golden_Spurs.jpg">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blason_pays_fr_France_ancien.svg/1280px-Blason_pays_fr_France_ancien.svg.png">
 
-  <p>Vlaamse leger tegen...?</p>
+  <p>Vlaamse leger tegen welk leger?</p>
 
   <button onclick="check(this,true)">Franse leger</button>
   <button onclick="check(this,false)">Engelse leger</button>
-  <button onclick="check(this,false)">Spaanse leger</button>
   <button onclick="check(this,false)">Duitse leger</button>
+  <button onclick="check(this,false)">Spaanse leger</button>
 
   <div class="feedback"></div>
 </div>
 
+<!-- VRAAG 4 -->
 <div class="page" id="q4">
   <h3>Vraag 4</h3>
 
-  <p>Welk objectnummer hoort bij de goedendag?</p>
+  <p>
+  De goedendag was een stok met een uitstekende pin en een ijzeren ring, waarmee gestoken en geslagen kon worden.  
+  Vaak wordt dit wapen verward met de strijdvlegel.
+  </p>
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Goedendags_in_het_museum_Kortrijk_1302_9-01-2010_14-20-13.JPG">
 
-  <button onclick="check(this,true)">1302</button>
-  <button onclick="check(this,false)">1001</button>
-  <button onclick="check(this,false)">2002</button>
-  <button onclick="check(this,false)">9999</button>
+  <button onclick="check(this,false)">2</button>
+  <button onclick="check(this,false)">5</button>
+  <button onclick="check(this,true)">8</button>
+  <button onclick="check(this,false)">12</button>
 
   <div class="feedback"></div>
 </div>
 
+<!-- VRAAG 5 -->
 <div class="page" id="q5">
   <h3>Vraag 5</h3>
-  <p>Welk objectnummer hoort bij het Guldenspoor?</p>
 
-  <button onclick="finish(this,true)">1302</button>
-  <button onclick="finish(this,false)">500</button>
-  <button onclick="finish(this,false)">700</button>
-  <button onclick="finish(this,false)">1000</button>
+  <img src="https://www.uwkringding.be/data/auction/2025/09/DSC06900.jpg">
+
+  <p>Welk cijfer hoort bij het Guldenspoor?</p>
+
+  <button onclick="finish(this,false)">1</button>
+  <button onclick="finish(this,true)">3</button>
+  <button onclick="finish(this,false)">5</button>
+  <button onclick="finish(this,false)">7</button>
 
   <div class="feedback"></div>
 </div>
@@ -178,10 +185,7 @@ img {
 <script>
 let current = 1;
 
-/* =========================
-   GPS PRO LOCK
-========================= */
-
+/* GPS PRO LOCK */
 function checkGPS() {
   const locations = [
     { name: "Testlocatie Harelbeke", lat: 50.834078, lng: 3.322215 },
@@ -192,8 +196,7 @@ function checkGPS() {
   const samples = [];
   const requiredSamples = 4;
 
-  document.getElementById("gpsStatus").innerHTML =
-    "📡 GPS wordt gecontroleerd...";
+  document.getElementById("gpsStatus").innerHTML = "📡 GPS controleren...";
 
   function getSample() {
     navigator.geolocation.getCurrentPosition(pos => {
@@ -211,8 +214,7 @@ function checkGPS() {
       analyzeGPS(samples, locations, maxDistance);
 
     }, () => {
-      document.getElementById("gpsStatus").innerHTML =
-        "⚠️ GPS geweigerd";
+      document.getElementById("gpsStatus").innerHTML = "⚠️ GPS geweigerd";
     }, {
       enableHighAccuracy: true,
       timeout: 10000,
@@ -249,11 +251,7 @@ function analyzeGPS(samples, locations, maxDistance) {
     }
   });
 
-  let isValid =
-    bestDist < maxDistance &&
-    avgAcc < 150;
-
-  if (isValid) {
+  if (bestDist < maxDistance) {
     document.getElementById("gpsStatus").innerHTML =
       "✅ Start bevestigd: " + best;
 
@@ -293,15 +291,13 @@ function check(btn, correct) {
   if (correct) {
     btn.classList.add("correct");
     fb.innerHTML = "✅ Juist!";
-
     setTimeout(() => {
       current++;
       go("q" + current);
     }, 1200);
-
   } else {
     btn.classList.add("wrong");
-    fb.innerHTML = "❌ Fout, probeer opnieuw!";
+    fb.innerHTML = "❌ Fout!";
   }
 }
 
@@ -311,12 +307,10 @@ function finish(btn, correct) {
   if (correct) {
     btn.classList.add("correct");
     fb.innerHTML = "✅ Juist!";
-
     setTimeout(() => go("end"), 1200);
-
   } else {
     btn.classList.add("wrong");
-    fb.innerHTML = "❌ Fout, probeer opnieuw!";
+    fb.innerHTML = "❌ Fout!";
   }
 }
 </script>
