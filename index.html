@@ -13,7 +13,6 @@ html, body {
   background: #f4f4f4;
 }
 
-/* FULLSCREEN APP-LAYOUT */
 body {
   display: flex;
   flex-direction: column;
@@ -32,12 +31,12 @@ body {
   display: flex;
 }
 
-/* TEKST GROTER */
-h2 { font-size: 30px; margin: 10px 0; }
+/* TEKST */
+h2 { font-size: 30px; }
 h3 { font-size: 24px; }
 p  { font-size: 20px; }
 
-/* FULLSCREEN KNOPPEN */
+/* KNOPPEN */
 button {
   padding: 22px;
   margin: 10px 0;
@@ -158,7 +157,6 @@ img {
 
 <div class="page" id="q5">
   <h3>Vraag 5</h3>
-
   <p>Welk objectnummer hoort bij het Guldenspoor?</p>
 
   <button onclick="finish(this,true)">1302</button>
@@ -180,64 +178,90 @@ img {
 <script>
 let current = 1;
 
-/* GPS LOCK (2 LOCATIES + STABILITEIT) */
+/* =========================
+   GPS PRO LOCK
+========================= */
+
 function checkGPS() {
   const locations = [
     { name: "Testlocatie Harelbeke", lat: 50.834078, lng: 3.322215 },
     { name: "Onze-Lieve-Vrouwekerk Kortrijk", lat: 50.82888, lng: 3.26455 }
   ];
 
-  const maxDistance = 80;
-  let samples = [];
+  const maxDistance = 150;
+  const samples = [];
+  const requiredSamples = 4;
 
-  function sample(i) {
+  document.getElementById("gpsStatus").innerHTML =
+    "📡 GPS wordt gecontroleerd...";
+
+  function getSample() {
     navigator.geolocation.getCurrentPosition(pos => {
-      samples.push(pos);
+      samples.push({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        acc: pos.coords.accuracy
+      });
 
-      if (samples.length < 3) {
-        setTimeout(() => sample(i + 1), 400);
+      if (samples.length < requiredSamples) {
+        setTimeout(getSample, 500);
         return;
       }
 
-      let ok = false;
-      let found = "";
-
-      samples.forEach(p => {
-        locations.forEach(loc => {
-          let d = getDistance(
-            p.coords.latitude,
-            p.coords.longitude,
-            loc.lat,
-            loc.lng
-          );
-
-          if (d < maxDistance && p.coords.accuracy < 30) {
-            ok = true;
-            found = loc.name;
-          }
-        });
-      });
-
-      if (ok) {
-        document.getElementById("gpsStatus").innerHTML =
-          "✅ Start bevestigd: " + found;
-
-        setTimeout(() => go('welcome'), 1200);
-      } else {
-        document.getElementById("gpsStatus").innerHTML =
-          "❌ Geen geldige startlocatie";
-      }
+      analyzeGPS(samples, locations, maxDistance);
 
     }, () => {
-      document.getElementById("gpsStatus").innerHTML = "⚠️ GPS geweigerd";
+      document.getElementById("gpsStatus").innerHTML =
+        "⚠️ GPS geweigerd";
     }, {
       enableHighAccuracy: true,
-      timeout: 8000,
+      timeout: 10000,
       maximumAge: 0
     });
   }
 
-  sample(0);
+  getSample();
+}
+
+/* ANALYSE */
+function analyzeGPS(samples, locations, maxDistance) {
+
+  let avgLat = 0, avgLng = 0, avgAcc = 0;
+
+  samples.forEach(s => {
+    avgLat += s.lat;
+    avgLng += s.lng;
+    avgAcc += s.acc;
+  });
+
+  avgLat /= samples.length;
+  avgLng /= samples.length;
+  avgAcc /= samples.length;
+
+  let best = null;
+  let bestDist = 999999;
+
+  locations.forEach(loc => {
+    let d = getDistance(avgLat, avgLng, loc.lat, loc.lng);
+    if (d < bestDist) {
+      bestDist = d;
+      best = loc.name;
+    }
+  });
+
+  let isValid =
+    bestDist < maxDistance &&
+    avgAcc < 150;
+
+  if (isValid) {
+    document.getElementById("gpsStatus").innerHTML =
+      "✅ Start bevestigd: " + best;
+
+    setTimeout(() => go('welcome'), 1200);
+  } else {
+    document.getElementById("gpsStatus").innerHTML =
+      "❌ Geen geldige startlocatie";
+  }
 }
 
 /* AFSTAND */
@@ -259,35 +283,37 @@ function getDistance(lat1, lon1, lat2, lon2) {
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-
   document.querySelectorAll('.feedback').forEach(f => f.innerHTML = "");
 }
 
-/* CHECK ANTWOORD */
+/* QUIZ */
 function check(btn, correct) {
   let fb = btn.parentElement.querySelector(".feedback");
 
   if (correct) {
     btn.classList.add("correct");
     fb.innerHTML = "✅ Juist!";
+
     setTimeout(() => {
       current++;
       go("q" + current);
     }, 1200);
+
   } else {
     btn.classList.add("wrong");
     fb.innerHTML = "❌ Fout, probeer opnieuw!";
   }
 }
 
-/* EINDE */
 function finish(btn, correct) {
   let fb = btn.parentElement.querySelector(".feedback");
 
   if (correct) {
     btn.classList.add("correct");
     fb.innerHTML = "✅ Juist!";
+
     setTimeout(() => go("end"), 1200);
+
   } else {
     btn.classList.add("wrong");
     fb.innerHTML = "❌ Fout, probeer opnieuw!";
